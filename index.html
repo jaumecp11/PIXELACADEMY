@@ -153,6 +153,9 @@ h1, h2, p, figure { margin: 0; }
   padding: 4px 10px; font-size: .8rem; font-weight: 700; letter-spacing: .04em;
   color: #fff; background: #E0457B; box-shadow: 0 0 0 3px var(--outline, #0b1460);
 }
+
+/* Sense scroll quan la pantalla ja hi cap (js/views/fit.js): en Pix queda quiet al seu lloc */
+html.pa-noscroll, html.pa-noscroll body { overflow: hidden; overscroll-behavior: none; }
 /* ============================================================
    Capçalera: paisatge, títol PIXEL ACADEMY i etiqueta de matèria
    ============================================================ */
@@ -976,13 +979,17 @@ a.section-card:focus-visible .section-card__name {
   font-size: clamp(1.4rem, 5cqi, 2rem);
 }
 
-/* ---------- Pantalles estretes: una columna ---------- */
+/* ---------- Pantalles estretes: 2×2 amb el dibuix a sobre (23-11: sense scroll;
+   abans una columna, que obligava a desplaçar-se). Una columna només als mòbils (<520px). ---------- */
 
 @media (max-width: 899px) {
   .sections-grid {
-    grid-template-columns: 1fr;
-    width: min(100%, 560px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(100%, calc((100vh - var(--inner-hero-h) - 110px) * 1.25));
   }
+  .activity-grid { width: min(100%, 680px); }
+  .activity-card { min-width: 0; }
+  .activity-card__title { font-size: clamp(1.25rem, 3.3vw, 1.9rem); overflow-wrap: anywhere; }
   .section-card {
     grid-template-columns: 1fr;
   }
@@ -1009,6 +1016,7 @@ a.section-card:focus-visible .section-card__name {
 
 @media (max-width: 520px) {
   :root { --inner-hero-h: 156px; }
+  .sections-grid { grid-template-columns: 1fr; width: min(100%, 560px); }
   .inner-hero__inner {
     grid-template-columns: 1fr;
     align-content: center;
@@ -14052,7 +14060,9 @@ PA.views.grammarReview = (function () {
   <script>
 /*
  * PIXEL ACADEMY — "Tot a la pantalla" (19-11-2026, petició del mestre:
- * cap exercici ha de demanar scroll).
+ * cap exercici ha de demanar scroll). 23-11-2026: també la pàgina de la unitat,
+ * els mapes i les llistes d'activitats, i la pàgina queda sense scroll
+ * (html.pa-noscroll) perquè en Pix no es mogui.
  * ------------------------------------------------------------
  * PA.fit.watch(main) mesura el contingut d'una pantalla d'activitat i, si no hi
  * cap sota la capçalera, el redueix amb CSS zoom (com a mínim fins al 60 %),
@@ -14076,14 +14086,18 @@ PA.fit = (function () {
     var z = need > avail ? Math.max(MIN, Math.floor(avail / need * 100) / 100) : 1;
     main.style.zoom = z < 1 ? String(z) : "";
     /* arrodoniments: si encara sobresurt uns píxels, es redueix una mica més */
-    for (var k = 0; k < 6 && z > MIN && document.documentElement.scrollHeight > window.innerHeight + 1; k++) {
+    for (var k = 0; k < 20 && z > MIN && document.documentElement.scrollHeight > window.innerHeight + 1; k++) {
       z = Math.max(MIN, Math.round((z - 0.02) * 100) / 100);
       main.style.zoom = String(z);
     }
     main.classList.toggle("is-fitted", z < 1);
+    /* si ja hi cap, la pàgina queda bloquejada: sense scroll, en Pix no es mou mai */
+    document.documentElement.classList.toggle("pa-noscroll",
+      document.documentElement.scrollHeight <= window.innerHeight + 1 || z > MIN);
   }
 
   function stop() {
+    document.documentElement.classList.remove("pa-noscroll");
     if (!current) return;
     current.mo.disconnect();
     window.removeEventListener("resize", current.onResize);
@@ -16267,7 +16281,9 @@ PA.views.unit = (function () {
       /* activitats: tot a la pantalla, sense scroll (js/views/fit.js) */
       var actMain = (guideStage || route.activityId) ? root.querySelector("main.sections") : null;
       if (actMain) actMain.classList.add("is-activity");
-      if (PA.fit) PA.fit[actMain ? "watch" : "stop"](actMain);
+      /* totes les pantalles de la unitat (menú, mapes, llistes): també sense scroll (23-11) */
+      var fitMain = actMain || root.querySelector("main");
+      if (PA.fit) PA.fit[fitMain ? "watch" : "stop"](fitMain);
 
       var activity = route.activityId ? PA.getActivity(section.activities, route.activityId) : null;
       var guide = guideStage ? ((PA.getRunGame && PA.getRunGame(guideStage.activity)) || (PA.getSortGame && PA.getSortGame(guideStage.activity)) || (PA.getPizzaMaker && PA.getPizzaMaker(guideStage.activity)) || PA.getFieldGuide(guideStage.activity) || PA.getSafariGame(guideStage.activity) || PA.getWordSigns(guideStage.activity) || PA.getExpressGame(guideStage.activity) || PA.getFindActionGame(guideStage.activity) || PA.getOpenZooGame(guideStage.activity) || PA.getGrammarActivity(guideStage.activity) || (PA.getSkillActivity && PA.getSkillActivity(guideStage.activity))) : null;
@@ -16329,6 +16345,7 @@ PA.views.unit = (function () {
     } else {
       var comingBack = lastView === "unit";
       PA.views.unit.hide();
+      if (PA.fit) PA.fit.stop();
       PA.views.home.show(app, route);
       if (comingBack) {
         window.scrollTo(0, homeScroll);
