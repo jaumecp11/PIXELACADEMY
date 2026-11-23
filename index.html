@@ -9558,6 +9558,8 @@ PA.views.home = (function () {
       }
       setAccent(course);
       document.title = course ? course.name + " – Pixel Academy" : "Pixel Academy";
+      /* portada del curs: també sense scroll (23-11), com la resta de pantalles (js/views/fit.js) */
+      if (PA.fit) PA.fit.watch(unitsArea);
     },
     hide: function () {
       if (root) {
