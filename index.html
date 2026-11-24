@@ -3875,11 +3875,9 @@ span.letter-slot.is-filled {
 .aa-dialog__label { margin: 0; font-size: 0.9rem; font-weight: 700; color: var(--ink-soft); }
 .aa-a--blank { white-space: nowrap; }
 
-/* fitxes: are amb accent verd, aren't amb accent vermell */
-.px-btn.wl-chip.aa-chip--yes { --tone: #f0faea; --tone-hi: #f6fdf2; color: #1d7a35; }
-.px-btn.wl-chip.aa-chip--no  { --tone: #fff1ee; --tone-hi: #fff6f4; color: #b4232c; }
-.px-btn.wl-chip.aa-chip--yes.is-picked { --tone: #c9f1b6; --tone-hi: #c9f1b6; }
-.px-btn.wl-chip.aa-chip--no.is-picked  { --tone: #ffd3cc; --tone-hi: #ffd3cc; }
+/* fitxes are / aren't: 24-11-2026 (mestre) sense color abans de respondre; el verd i el vermell només surten en corregir */
+.px-btn.wl-chip.aa-chip--yes, .px-btn.wl-chip.aa-chip--no { --tone: #ffffff; --tone-hi: #f4f6ff; color: #0b1460; }
+.px-btn.wl-chip.aa-chip--yes.is-picked, .px-btn.wl-chip.aa-chip--no.is-picked { --tone: #ffe680; --tone-hi: #ffe680; }
 .aa-chips { margin-top: calc(var(--px) * 1); }
 
 /* ✓ / ✗ */
@@ -3987,11 +3985,9 @@ span.letter-slot.is-filled {
   font-size: clamp(1.1rem, 1.5vw, 1.35rem);
   text-shadow: none;
 }
-/* verd per a l'afirmativa, vermell per a la negativa */
-.px-btn.aa-answer--yes { --tone: #f0faea; --tone-hi: #f6fdf2; color: #1d7a35; }
-.px-btn.aa-answer--no  { --tone: #fff1ee; --tone-hi: #fff6f4; color: #b4232c; }
-.px-btn.aa-answer--yes.is-picked { --tone: #c9f1b6; --tone-hi: #c9f1b6; }
-.px-btn.aa-answer--no.is-picked  { --tone: #ffd3cc; --tone-hi: #ffd3cc; }
+/* respostes Yes / No: 24-11-2026 (mestre) sense color abans de respondre; el verd i el vermell només surten en corregir */
+.px-btn.aa-answer--yes, .px-btn.aa-answer--no { --tone: #ffffff; --tone-hi: #f4f6ff; color: #0b1460; }
+.px-btn.aa-answer--yes.is-picked, .px-btn.aa-answer--no.is-picked { --tone: #ffe680; --tone-hi: #ffe680; }
 .px-btn.aa-answer.is-ok { --tone: #8ee07a; --tone-hi: #8ee07a; color: #0b1460; }
 .px-btn.aa-answer.is-no { --tone: #ff9b8f; --tone-hi: #ff9b8f; color: #0b1460; }
 .px-btn.aa-answer.is-answer { outline: var(--px) dashed #2e9f4a; outline-offset: calc(var(--px) * 0.75); }
@@ -4151,9 +4147,9 @@ span.letter-slot.is-filled {
   font-size: clamp(1.1rem, 1.6vw, 1.45rem);
   text-shadow: none;
 }
-/* are en verd i aren't en vermell, com a Ask and answer */
-.px-btn.pz-option--yes { --tone: #f0faea; --tone-hi: #f6fdf2; color: #1d7a35; }
-.px-btn.pz-option--no  { --tone: #fff1ee; --tone-hi: #fff6f4; color: #b4232c; }
+/* 24-11-2026 (mestre): are / aren't sense color abans de respondre */
+.px-btn.pz-option--yes, .px-btn.pz-option--no { --tone: #ffffff; --tone-hi: #f4f6ff; color: #0b1460; }
+.px-btn.pz-option .wl-verb { background: none; box-shadow: none; color: inherit; }
 .px-btn.pz-option.is-ok { --tone: #8ee07a; --tone-hi: #8ee07a; color: #0b1460; }
 .px-btn.pz-option.is-no { --tone: #ff9b8f; --tone-hi: #ff9b8f; color: #0b1460; }
 .px-btn.pz-option.is-answer { color: #0b1460; outline: var(--px) dashed #2e9f4a; outline-offset: calc(var(--px) * 0.75); }
@@ -4718,10 +4714,9 @@ span.letter-slot.is-filled {
 /* True / False */
 .sk-tf { display: flex; gap: clamp(16px, 2vw, 28px); justify-content: center; }
 .px-btn.sk-tf__btn { min-width: clamp(140px, 13vw, 190px); min-height: clamp(52px, 7vh, 62px); font-size: clamp(1.2rem, 1.7vw, 1.5rem); text-shadow: none; }
-.px-btn.sk-tf__btn--true  { --tone: #f0faea; --tone-hi: #f6fdf2; color: #1d7a35; }
-.px-btn.sk-tf__btn--false { --tone: #fff1ee; --tone-hi: #fff6f4; color: #b4232c; }
-.px-btn.sk-tf__btn--true.is-picked  { --tone: #c9f1b6; --tone-hi: #c9f1b6; }
-.px-btn.sk-tf__btn--false.is-picked { --tone: #ffd3cc; --tone-hi: #ffd3cc; }
+/* 24-11-2026 (mestre): True / False sense color abans de respondre */
+.px-btn.sk-tf__btn--true, .px-btn.sk-tf__btn--false { --tone: #ffffff; --tone-hi: #f4f6ff; color: #0b1460; }
+.px-btn.sk-tf__btn--true.is-picked, .px-btn.sk-tf__btn--false.is-picked { --tone: #ffe680; --tone-hi: #ffe680; }
 .px-btn.sk-tf__btn.is-ok { --tone: #8ee07a; --tone-hi: #8ee07a; color: #0b1460; }
 .px-btn.sk-tf__btn.is-no { --tone: #ff9b8f; --tone-hi: #ff9b8f; color: #0b1460; }
 .px-btn.sk-tf__btn.is-answer { outline: var(--px) dashed #2e9f4a; outline-offset: calc(var(--px) * 0.75); }
@@ -5113,6 +5108,16 @@ span.letter-slot.is-filled {
 .sk-kind--tap.is-listen .sk-feedback { min-height: 60px; }
 .sk-kind--tap .sk-tap { width: min(100%, calc((100vh - var(--inner-hero-h) - 340px) * 1.52)); }
 .sk-kind--tap.is-listen .sk-tap { width: min(100%, calc((100vh - var(--inner-hero-h) - 375px) * 1.52)); }
+
+/* ✓ / ✗ damunt la carta (Tick or Cross?, U2 Grammar, 24-11-2026) */
+.sk-sprite.has-mark { position: relative; width: clamp(150px, calc(100vh - var(--inner-hero-h) - 330px), 250px); }
+.sk-mark {
+  position: absolute; top: 4px; right: -54px; width: 1.9em; height: 1.9em; display: grid; place-items: center;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem); font-weight: 700; line-height: 1; color: #fff;
+  box-shadow: 0 0 0 3px var(--outline, #0b1460), 0 4px 0 3px rgba(11, 20, 96, .25);
+}
+.sk-mark.is-yes { background: #2f9e44; }
+.sk-mark.is-no { background: #e2232c; }
 /* ============================================================
    Rellotge pixelat, horari i lliçó de teoria (3r · Unit 2).
    Fa servir les cartes de What do they do? (.wd-*) per a les parelles.
@@ -5209,7 +5214,8 @@ span.letter-slot.is-filled {
   padding: 0 calc(var(--px) * 4);
   font-size: clamp(1rem, 1.45vw, 1.25rem);
 }
-.px-btn.sk-option.is-neg { --tone: #fff1ee; --tone-hi: #fff6f4; color: #b4232c; }
+/* 24-11-2026 (mestre): les opcions negatives ja no van en vermell: abans de respondre, totes iguals */
+.px-btn.sk-option.is-neg { --tone: #ffffff; --tone-hi: #f4f6ff; color: #0b1460; }
 .px-btn.sk-option.is-picked { --tone: #ffe680; --tone-hi: #ffe680; color: #0b1460; }
 .px-btn.sk-option.is-ok { --tone: #8ee07a; --tone-hi: #8ee07a; color: #0b1460; }
 .px-btn.sk-option.is-no { --tone: #ff9b8f; --tone-hi: #ff9b8f; color: #0b1460; }
@@ -5964,7 +5970,10 @@ PA.maps = {
       { id: "stage-4", type: "theory",    label: "My Timetable",        activity: "u2-my-timetable" },
       { id: "stage-5", type: "exercise",  label: "Timetable Detective", activity: "u2-timetable-detective" },
       { id: "stage-6", type: "theory",    label: "Ruby and Oscar",      activity: "u2-ruby-oscar" },
-      { id: "stage-7", type: "challenge", label: "Grammar Review",      activity: "u2-grammar-review" }
+      /* 24-11-2026: pràctica de he walks / he doesn't walk abans del Review (qui ja tenia el Review obert el conserva) */
+      /* l'escena «school» té 7 punts: la casella nova va al tram de dalt, entre la 6 i el Review */
+      { id: "stage-6b", type: "exercise", label: "Tick or Cross?",      activity: "u2-tick-cross", position: { x: 56, y: 28.6 } },
+      { id: "stage-7", type: "challenge", label: "Grammar Review",      activity: "u2-grammar-review", keepUnlocked: true, position: { x: 71.4, y: 31.9 } }
     ]
   }),
 
@@ -8747,7 +8756,44 @@ PA.skillActivities = PA.skillActivities || {};
                 { image: "ruby-no-english", neg: true, who: "Ruby: ", text: "She {doesn't like} English.", alt: "Ruby frowning at an English book" }] },
       { type: "pair", title: "likes · doesn't like",
         cards: [{ image: "oscar-english", who: "Oscar: ", text: "He [likes] English.", alt: "Oscar smiling and reading an English book" },
-                { image: "oscar-no-maths", neg: true, who: "Oscar: ", text: "He {doesn't like} Maths.", alt: "Oscar frowning at a calculator" }] }
+                { image: "oscar-no-maths", neg: true, who: "Oscar: ", text: "He {doesn't like} Maths.", alt: "Oscar frowning at a calculator" }] },
+      /* 24-11-2026 (petició del mestre, comparant amb el llibre: Lesson 6, AB p. 91 i fitxa de reforç):
+         més verbs en 3a persona i la regla -s / -es / doesn't + verb sense -s.
+         Les negatives que no tenen «no» dibuixat porten la creu vermella de la web (cross: true). */
+      { type: "pair", title: "walks · doesn't walk", note: "walk → [walks]. Amb {doesn't}, el verb va sense -s: {doesn't walk}.",
+        cards: [{ image: "walk", text: "He [walks] to school.", alt: "A boy walking to school with his school bag" },
+                { image: "oscar-bus", neg: true, who: "Oscar: ", text: "He {doesn't walk} to school.", alt: "Oscar waving from the yellow school bus" }] },
+      { type: "pair", title: "crosses · doesn't cross", note: "cross → [crosses], go → [goes]: afegim -es.",
+        cards: [{ image: "ruby-bridge", who: "Ruby: ", text: "She [crosses] the river on a bridge.", alt: "Ruby on her scooter crossing a wooden bridge over a river" },
+                { image: "rope", neg: true, cross: true, who: "Ruby: ", text: "She {doesn't cross} the river on a rope.", alt: "A rope, crossed out" }] },
+      { type: "pair", title: "plays · doesn't play", note: "play → [plays] · {doesn't play}",
+        cards: [{ image: "oscar-football", who: "Oscar: ", text: "He [plays] football.", alt: "Oscar playing football" },
+                { image: "river", neg: true, cross: true, who: "Oscar: ", text: "He {doesn't play} in the river.", alt: "A river, crossed out" }] },
+      { type: "pair", title: "starts · doesn't start", note: "start → [starts] · {doesn't start}",
+        cards: [{ image: "bell", text: "School [starts] at nine o'clock.", alt: "The school bell" },
+                { image: "clock", neg: true, cross: true, text: "School {doesn't start} at ten o'clock.", alt: "A clock, crossed out" }] }
+    ]
+  };
+
+  /* ---------- 6b · Tick or Cross? (exercici, 24-11-2026) ----------
+     Com l'AB p. 91 i la fitxa de reforç: mires la carta amb ✓ o ✗ i tries la frase.
+     La 3a opció és la trampa típica (doesn't walks / he play). La ✓/✗ la posa la web (mark). */
+  function tc(sprite, mark, question, answer, other, trap) {
+    return { sprite: sprite, mark: mark, question: question, answer: answer, options: [answer, other, trap] };
+  }
+  PA.skillActivities["u2-tick-cross"] = {
+    title: "Tick or Cross?", kind: "choose",
+    instruction: "Look at the ✓ or ✗. Choose!",
+    stars: [4, 6, 8],   /* de 8 */
+    items: [
+      tc("walk", "yes", "Look at the boy.", "He walks to school.", "He doesn't walk to school.", "He walk to school."),
+      tc("oscar-bus", "yes", "Look at Oscar.", "He goes to school by bus.", "He doesn't go to school by bus.", "He gos to school by bus."),
+      tc("ruby-bridge", "yes", "Look at Ruby.", "She crosses the river on a bridge.", "She doesn't cross the river on a bridge.", "She cross the river on a bridge."),
+      tc("rope", "no", "Look at Ruby's rope.", "She doesn't cross the river on a rope.", "She crosses the river on a rope.", "She doesn't crosses the river on a rope."),
+      tc("oscar-football", "yes", "Look at Oscar.", "He plays football.", "He doesn't play football.", "He play football."),
+      tc("river", "no", "Oscar and the river.", "He doesn't play in the river.", "He plays in the river.", "He doesn't plays in the river."),
+      tc("ruby-no-english", "no", "Look at Ruby.", "She doesn't like English.", "She likes English.", "She doesn't likes English."),
+      tc("bell", "yes", "Look at the school bell.", "School starts at nine o'clock.", "School doesn't start at nine o'clock.", "School start at nine o'clock.")
     ]
   };
 
@@ -8763,7 +8809,7 @@ PA.skillActivities = PA.skillActivities || {};
   PA.skillActivities["u2-grammar-review"] = {
     title: "Grammar Review", kind: "choose",
     instruction: "Choose, build and order!",
-    stars: [4, 7, 9],   /* de 10 */
+    stars: [5, 8, 11],   /* de 12 (24-11: +2 rondes) */
     items: [
       { clock: [8, 0],  question: "What time is it?", answer: its(8, 0),  options: [its(8, 0), its(8, 30), its(9, 0)] },
       { board: "build", max: 1, sprite: "ruby-scooter", question: "Look at Ruby. Build the sentence.",
@@ -8785,7 +8831,12 @@ PA.skillActivities = PA.skillActivities || {};
       { board: "build", max: 1, sprite: "ruby-no-english", question: "Look at Ruby. Build the sentence.",
         groups: cols("What", ["She", "He", "They"], ["doesn't like", "likes", "don't like"], ["English", "Maths", "Art"]) },
       { board: "words", max: 1, sprite: "ruby-scooter", question: "Put the words in order.",
-        lines: [{ who: "Oscar", build: "How do you get to school?" }, { who: "Ruby", text: "I go by scooter." }] }
+        lines: [{ who: "Oscar", build: "How do you get to school?" }, { who: "Ruby", text: "I go by scooter." }] },
+      /* 24-11-2026: verbs nous de la teoria (crosses, doesn't play) */
+      { board: "build", max: 1, sprite: "ruby-bridge", question: "Look at Ruby. Build the sentence.",
+        groups: cols("Where", ["She", "He", "They"], ["crosses", "cross", "doesn't cross"], ["the river on a bridge", "the river on a rope", "the road"]) },
+      { sprite: "river", mark: "no", question: "Oscar and the river.", answer: "He doesn't play in the river.",
+        options: ["He doesn't play in the river.", "He plays in the river.", "He doesn't plays in the river."] }
     ]
   };
 
@@ -15759,7 +15810,11 @@ PA.views.skill = (function () {
         if (it.timetable || (it.useTimetable && act.timetable)) task.appendChild(PA.timetable(it.timetable || act.timetable,
           { highlight: it.highlight, title: it.ttTitle, size: (it.timetable || act.timetable).length <= 3 ? "big" : null }));
         if (it.picture) task.appendChild(picture(it.picture, it.point));
-        if (it.sprite) task.appendChild(h("div.sk-sprite", null, h("img", { src: PA.cardSrc(it.sprite, 400), alt: "", width: "400", height: "400" })));
+        /* it.mark ("yes"/"no"): ✓ verda o ✗ vermella damunt la carta (Tick or Cross?, 24-11-2026) */
+        if (it.sprite) task.appendChild(h("div.sk-sprite" + (it.mark ? ".has-mark" : ""), null, [
+          h("img", { src: PA.cardSrc(it.sprite, 400), alt: "", width: "400", height: "400" }),
+          it.mark ? h("span.sk-mark.is-" + it.mark, { role: "img", "aria-label": it.mark === "yes" ? "Yes" : "No" }, it.mark === "yes" ? "✓" : "✗") : null
+        ]));
         if (it.pizza) task.appendChild(h("div.sk-pizza" + (it.no ? ".has-no" : ""), null, PA.pizzaArt(it.pizza, { no: it.no, size: 400 })));
         if (it.say) task.appendChild(player);
         if (it.question) task.appendChild(h("p.sk-line.sk-question", null, it.question));
