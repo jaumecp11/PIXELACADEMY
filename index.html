@@ -167,6 +167,16 @@ h1, h2, p, figure { margin: 0; }
 
 /* Sense scroll quan la pantalla ja hi cap (js/views/fit.js): en Pix queda quiet al seu lloc */
 html.pa-noscroll, html.pa-noscroll body { overflow: hidden; overscroll-behavior: none; }
+
+/* Amplada útil al costat d'en Pix (24-11-2026, propostes C i Open the Zoo): el contingut ample va de
+   l'espai d'en Pix (250px a l'esquerra) fins a la vora dreta, i es desplaça només si cal. */
+:root {
+  --wide-w: min(1000px, calc(100vw - 274px));
+  --wide-shift: max(0px, calc(250px - (100vw - var(--wide-w)) / 2));
+}
+@media (max-width: 699px) { :root { --wide-w: 100%; --wide-shift: 0px; } }
+/* la consigna també es centra sobre el contingut desplaçat */
+.ls-page .wd-head, .aa-page .aa-head, .ozoo-page .ozoo-head { position: relative; left: var(--wide-shift); }
 /* ============================================================
    Capçalera: paisatge, títol PIXEL ACADEMY i etiqueta de matèria
    ============================================================ */
@@ -756,8 +766,10 @@ html.pa-noscroll, html.pa-noscroll body { overflow: hidden; overscroll-behavior:
    ============================================================ */
 
 :root {
-  /* Capçalera interior: molt més baixa que la portada */
-  --inner-hero-h: clamp(128px, 17vh, 180px);
+  /* Capçalera interior: una sola franja (24-11-2026, proposta C del mestre:
+     tornar + unitat + títol en una línia, per guanyar alçada a les activitats).
+     Abans: clamp(128px, 17vh, 180px) amb la unitat a sobre del títol. */
+  --inner-hero-h: clamp(80px, 11vh, 104px);
 }
 
 /* ---------- Capçalera interior compacta ---------- */
@@ -1018,6 +1030,13 @@ a.section-card:focus-visible .section-card__name {
   }
   .section-card__name { font-size: clamp(1.5rem, 7cqi, 2.1rem); }
   .section-card__tagline { font-size: clamp(1rem, 3.8cqi, 1.2rem); }
+}
+
+/* unitat i títol en una línia (24-11-2026) */
+@media (min-width: 521px) {
+  .inner-hero__heading { flex-direction: row; align-items: center; gap: calc(var(--px) * 3); }
+  .inner-hero__title { font-size: clamp(1.7rem, min(3.4vw, 5.6vh), 2.7rem); }
+  .inner-hero__inner { padding-top: 4px; padding-bottom: 6px; }
 }
 
 @media (max-width: 820px) {
@@ -3210,8 +3229,8 @@ span.letter-slot.is-filled {
 .ozoo-panel { grid-area: sentence; }
 
 /* colors suaus de cada grup (columna i espai de la frase) */
-.ozoo-tone--animals { --g-bg: #dcf6f1; --g-line: #18b5a4; }
-.ozoo-tone--actions { --g-bg: #fff2c7; --g-line: #e0a100; }
+.ozoo-tone--animals, .ozoo-tone--who { --g-bg: #dcf6f1; --g-line: #18b5a4; }
+.ozoo-tone--actions, .ozoo-tone--verb { --g-bg: #fff2c7; --g-line: #e0a100; }
 .ozoo-tone--food,
 .ozoo-tone--drink,
 .ozoo-tone--places  { --g-bg: #ffe3d6; --g-line: #e2733d; }
@@ -3426,6 +3445,41 @@ span.letter-slot.is-filled {
   .ozoo-group { padding: calc(var(--px) * 2) calc(var(--px) * 1.5) calc(var(--px) * 3); gap: calc(var(--px) * 2); }
   .px-btn.ozoo-chip { font-size: 0.95rem; padding: 0 calc(var(--px) * 1); }
   .ozoo-slot { min-width: 64px; }
+}
+
+/* ---------- Disseny nou (24-11-2026, proposta del mestre): ----------
+   dibuix a dalt a l'esquerra, la frase gran a dalt a la dreta i les columnes de paraules
+   a sota, amples, a tota l'amplada (abans: columnes petites a la dreta i frase sota el dibuix). */
+@media (min-width: 1001px) and (orientation: landscape) {
+  .sections.ozoo-page {
+    --row-w: var(--wide-w);
+    --pic: clamp(150px, calc(100vh - var(--inner-hero-h) - 400px), 330px);
+  }
+  .ozoo-play {
+    grid-template-columns: var(--pic) minmax(0, 1fr);
+    grid-template-areas: "pic sentence" "groups groups";
+    width: var(--row-w); margin: 0 auto; position: relative; left: var(--wide-shift);
+    align-items: stretch;
+    gap: clamp(14px, 2.2vh, 24px) clamp(16px, 2vw, 26px);
+  }
+  .ozoo-pic { width: var(--pic); }
+  .ozoo-panel { width: auto; justify-content: center; }
+  .ozoo-sentence { justify-content: center; }
+  .ozoo-slot { min-height: clamp(50px, 7.5vh, 68px); min-width: clamp(100px, 11vw, 170px); font-size: clamp(1.2rem, 1.9vw, 1.6rem); }
+  .ozoo-slot__hint { font-size: clamp(0.95rem, 1.4vw, 1.2rem); }
+  .ozoo-sentence { flex-wrap: nowrap; }
+  .ozoo-groups { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); width: 100%; align-self: start; gap: clamp(14px, 2vw, 22px); }
+  .ozoo-group { padding: calc(var(--px) * 2.5) calc(var(--px) * 3) calc(var(--px) * 3); gap: calc(var(--px) * 2); }
+  .ozoo-group__chips { gap: calc(var(--px) * 2); }
+  .px-btn.ozoo-chip { min-height: clamp(42px, 6.4vh, 56px); font-size: clamp(1.2rem, 1.9vw, 1.6rem); }
+}
+@media (min-width: 1001px) and (orientation: landscape) {
+  .ozoo-panel__title { font-size: clamp(1.15rem, 1.7vw, 1.45rem); }
+}
+/* paraula que ja ve posada a la frase (Pizza Builder!, 24-11-2026) */
+.ozoo-tile.is-given { background: #ffffff; color: #0b1460; }
+@media (min-width: 1001px) and (orientation: landscape) {
+  .ozoo-groups[style*="--cols: 2"] { width: min(100%, 680px); justify-self: center; }
 }
 /* ============================================================
    What are they like? — Grammar 1 (They are / They aren't + adjectiu).
@@ -4036,6 +4090,45 @@ span.letter-slot.is-filled {
   .aa-they { font-size: 0.9rem; }
   .px-btn.aa-tile { min-width: 48px; padding: 0 calc(var(--px) * 2); font-size: 1.15rem; }
 }
+
+/* ---------- Proposta C (24-11-2026, mestre): ----------
+   · sense caixetes Q/A a cap pantalla: la pregunta va en lila clar i la resposta en verd o vermell;
+   · exemple resolt: dibuix a dalt a tota l'amplada, la parella del sí i la del no una al costat
+     de l'altra a sota, i «Let's start!» a baix a la dreta. */
+.aa-page .aa-line__tag { display: none; }
+.aa-page .aa-line { grid-template-columns: 1fr; }
+
+.aa-play[data-mode="model"] {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: clamp(12px, 2vh, 20px);
+  --c-w: var(--wide-w);
+  position: relative; left: var(--wide-shift);
+}
+.aa-play[data-mode="model"] .aa-left {
+  --art-max-w: var(--c-w);
+  width: var(--c-w);
+  padding: calc(var(--px) * 2) 0;
+  background: color-mix(in srgb, var(--c) 8%, #ffffff);
+  box-shadow: inset 0 calc(var(--px) * 1.5) 0 0 var(--c),
+    0 calc(var(--px) * -1) 0 0 var(--outline), 0 var(--px) 0 0 var(--outline),
+    calc(var(--px) * -1) 0 0 0 var(--outline), var(--px) 0 0 0 var(--outline), 0 calc(var(--px) * 2.5) 0 0 var(--shadow);
+}
+.aa-play[data-mode="model"] .aa-left .wl-stage { background: none; box-shadow: none; }
+.aa-play[data-mode="model"] .aa-pointer { display: none; }
+.aa-play[data-mode="model"] .aa-panel { width: var(--c-w); padding: 0; background: none; box-shadow: none; gap: clamp(10px, 1.6vh, 16px); }
+.aa-play[data-mode="model"] .aa-right { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 2vw, 24px); }
+.aa-play[data-mode="model"] .aa-dialog {
+  padding: calc(var(--px) * 4) calc(var(--px) * 3) calc(var(--px) * 3);
+  background: #ffffff; border-top: 0;
+  box-shadow: inset 0 calc(var(--px) * 1.5) 0 0 var(--c),
+    0 calc(var(--px) * -1) 0 0 var(--outline), 0 var(--px) 0 0 var(--outline),
+    calc(var(--px) * -1) 0 0 0 var(--outline), var(--px) 0 0 0 var(--outline), 0 calc(var(--px) * 2.5) 0 0 var(--shadow);
+}
+.aa-play[data-mode="model"] .aa-dialog__label { display: none; }
+.aa-play[data-mode="model"] .aa-line__text { font-size: clamp(1.3rem, min(2.2vw, 3.6vh), 1.9rem); }
+.aa-play[data-mode="model"] .aa-actions { align-self: flex-end; }
+.sections.aa-page:has(.aa-play[data-mode="model"]) { --art-h: clamp(150px, calc(100vh - var(--inner-hero-h) - 420px), 420px); }
 /* ============================================================
    Animal Puzzle — Grammar 3. Tauler de peces (fons comú darrere de totes,
    perquè les zones transparents es llegeixin igual), peça triada ressaltada,
@@ -5265,6 +5358,48 @@ span.letter-slot.is-filled {
 .sk-clockbox { width: clamp(170px, min(24vw, calc(100vh - var(--inner-hero-h) - 370px)), 300px); }
 .sk-clockbox--big { width: clamp(170px, min(24vw, calc(100vh - var(--inner-hero-h) - 400px)), 300px); }
 .sk-clockbox.is-answer { width: clamp(90px, 10vw, 140px); }
+
+/* ---------- Proposta C (24-11-2026): consigna i subtítol en una barra ---------- */
+.ls-page .wd-head { gap: calc(var(--px) * 3); margin-bottom: calc(var(--px) * 2.5); }
+.ls-page .wd-head .wd-title { font-size: clamp(1rem, 1.6vw, 1.35rem); }
+
+/* ---------- Proposta C (24-11-2026): dibuix a dalt, franja de frases a baix amb fletxes ---------- */
+.ls-c { display: flex; flex-direction: column; align-items: center; gap: clamp(12px, 2.2vh, 22px); width: var(--wide-w); position: relative; left: var(--wide-shift); }
+.ls-c__visual { display: flex; justify-content: center; width: 100%; }
+.ls-c__strip {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
+  gap: clamp(12px, 1.8vw, 22px); width: 100%;
+  padding: clamp(12px, 1.8vh, 18px) clamp(12px, 1.6vw, 18px);
+  background: #ffffff;
+  box-shadow: 0 calc(var(--px) * -0.75) 0 0 var(--outline), 0 calc(var(--px) * 0.75) 0 0 var(--outline),
+    calc(var(--px) * -0.75) 0 0 0 var(--outline), calc(var(--px) * 0.75) 0 0 0 var(--outline), 0 calc(var(--px) * 2.25) 0 0 var(--shadow);
+}
+.ls-c__lines, .ls-c__text { display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.3vh, 12px); min-width: 0; }
+.ls-c__nav { display: flex; flex-direction: column; gap: 8px; }
+.ls-c .ls-sentence { font-size: clamp(1.35rem, min(2.5vw, 4.2vh), 2.2rem); text-align: center; box-shadow:
+    0 calc(var(--px) * -0.75) 0 0 var(--outline), 0 calc(var(--px) * 0.75) 0 0 var(--outline),
+    calc(var(--px) * -0.75) 0 0 0 var(--outline), calc(var(--px) * 0.75) 0 0 0 var(--outline); }
+.ls-c .ls-sentence.is-q { font-size: clamp(1.25rem, min(2.2vw, 3.8vh), 1.9rem); box-shadow: none;
+  background: color-mix(in srgb, var(--c) 14%, #ffffff); }
+.ls-c .ls-hint { text-align: center; }
+.px-btn.guide-btn.ls-arrow { min-width: 0; width: clamp(52px, 5.2vw, 66px); height: clamp(52px, 8vh, 66px); padding: 0; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+.ls-c__nav .wd-done { min-width: 0; padding: 0 calc(var(--px) * 3); }
+.ls-c .ls-clock { width: clamp(150px, min(26vw, calc(100vh - var(--inner-hero-h) - 380px)), 330px); }
+.ls-c--explore .ls-clock { width: clamp(130px, min(22vw, calc(100vh - var(--inner-hero-h) - 420px)), 290px); }
+.ls-c--explore .ls-explore { flex-direction: row; gap: clamp(14px, 2vw, 28px); }
+
+/* horari curt: tres targetes grans una al costat de l'altra */
+.ls-c--tiles .px-timetable { grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; gap: clamp(10px, 1.6vw, 20px); }
+.ls-c .ls-note { font-size: clamp(0.95rem, 1.25vw, 1.1rem); }
+.ls-c--tiles .px-timetable__title { grid-column: 1 / -1; }
+.ls-c--tiles .px-timetable__row {
+  grid-template-columns: auto auto; grid-template-areas: "icon name" "clock clock" "time time";
+  justify-content: center; justify-items: center; row-gap: calc(var(--px) * 2); padding: calc(var(--px) * 2.5);
+}
+.ls-c--tiles .px-timetable__icon { grid-area: icon; }
+.ls-c--tiles .px-timetable__name { grid-area: name; font-size: clamp(1.3rem, 2.2vw, 1.9rem); }
+.ls-c--tiles .px-clock--sm { grid-area: clock; width: clamp(110px, min(15vw, calc(100vh - var(--inner-hero-h) - 450px)), 200px); }
+.ls-c--tiles .px-timetable__time { grid-area: time; }
 /* ============================================================
    REGLA D'INTERACCIÓ DE PIXEL ACADEMY
    Tots els elements clicables responen igual, cadascun amb el seu color.
@@ -7046,7 +7181,7 @@ PA.newOpenZooGame = function (game) {
   return shuffle(game.rounds).map(function (r) {
     /* rondes amb grups explícits (Pizza Builder!, U3): { group, tone, answer, options } */
     if (r.parts) return { id: r.id, image: r.image, groups: r.parts.map(function (p) {
-      return { name: p.group, tone: p.tone, answer: p.answer, options: shuffle(p.options) };
+      return { name: p.group, tone: p.tone, answer: p.answer, options: shuffle(p.options), given: !!p.given };
     }) };
     var partner = [];
     game.confusables.forEach(function (p) { var i = p.indexOf(r.action); if (i !== -1) partner.push(p[1 - i]); });
@@ -8568,15 +8703,17 @@ window.PA = window.PA || {};
     ]
   };
 
-  /* Pizza Builder! — repte: [I have got · I haven't got] → [some · any] → [menjar].
-     Columnes que s'encenen una a una (motor Open the Zoo). En les frases negatives, els
-     distractors de menjar són toppings que SÍ hi ha a la pizza (així només una opció és bona). */
+  /* Pizza Builder! — repte: [I have got · I haven't got] → [some · any] → menjar.
+     24-11-2026 (mestre): l'aliment ja surt posat a la frase (given) i només es construeixen
+     les dues primeres columnes. Abans també es triava el menjar i hi havia més d'una frase
+     certa (amb la pizza de pinya, «some pineapple» i «any onions» eren totes dues bones).
+     Versió anterior: js/data/_historic/cooking-unit3-abans-menjar-donat.js.txt */
   var HAVE = ["I have got", "I haven't got"], SA = ["some", "any"];
   function round(id, pizza, yes, food, others) {
     return { id: id, image: "pizza-" + pizza, parts: [
       { group: "Have got", tone: "who",  answer: yes ? "I have got" : "I haven't got", options: HAVE },
       { group: "some / any", tone: "verb", answer: yes ? "some" : "any", options: SA },
-      { group: "Food",  tone: "food", answer: food, options: [food].concat(others) }
+      { group: "Food",  tone: "food", answer: food, options: [food].concat(others), given: true }
     ] };
   }
   PA.openZooGames["u3-pizza-builder"] = {
@@ -12340,11 +12477,12 @@ PA.views.openZoo = (function () {
         var w = picks[g.name];
         var tile = null;
         if (w) {
-          var cls = "span.ozoo-tile" + (checked ? (w === g.answer ? ".is-ok" : ".is-no") : "") +
+          /* g.given: paraula que ja ve posada (Pizza Builder!): no es corregeix ni es pot canviar */
+          var cls = "span.ozoo-tile" + (g.given ? ".is-given" : checked ? (w === g.answer ? ".is-ok" : ".is-no") : "") +
             (justPlaced === g.name ? ".is-new" : "");
           tile = h(cls, null, w);
         }
-        sentence.appendChild(h("span.ozoo-slot.ozoo-tone--" + g.name.toLowerCase() + (w ? ".is-filled" : ""),
+        sentence.appendChild(h("span.ozoo-slot.ozoo-tone--" + (g.tone || g.name.toLowerCase()) + (w ? ".is-filled" : ""),
           { "data-group": g.name, "aria-label": g.name + ": " + (w || "empty") },
           tile || h("span.ozoo-slot__hint", { "aria-hidden": "true" }, g.name)));
       });
@@ -12358,6 +12496,7 @@ PA.views.openZoo = (function () {
          les ja triades i la que toca ara; les següents queden apagades i no es poden tocar */
       var turn = rd.groups.findIndex(function (g) { return !picks[g.name]; });
       rd.groups.forEach(function (g, gi) {
+        if (g.given) return;   /* ja és a la frase: sense columna */
         var locked = !checked && turn !== -1 && gi > turn;
         var state = checked ? "" : locked ? ".is-locked" : gi === turn ? ".is-turn" : ".is-done";
         var chips = g.options.map(function (w) {
@@ -12383,7 +12522,7 @@ PA.views.openZoo = (function () {
       count.textContent = "Round " + (idx + 1) + "/" + rounds.length;
       pic.src = PA.openZooImage(game, rd.image, PA.isInline() ? 400 : 800);
       pic.setAttribute("data-image", rd.image);
-      groupsBox.style.setProperty("--cols", rd.groups.length);
+      groupsBox.style.setProperty("--cols", rd.groups.filter(function (g) { return !g.given; }).length);
       renderSentence();
       renderGroups();
       justPlaced = null;
@@ -12396,6 +12535,7 @@ PA.views.openZoo = (function () {
 
     function startRound() {
       picks = {}; checked = false;
+      round().groups.forEach(function (g) { if (g.given) picks[g.name] = g.answer; });
       feedback.textContent = ""; feedback.className = "guide-feedback ozoo-feedback";
       pic.classList.remove("is-new"); void pic.offsetWidth; pic.classList.add("is-new");
       render();
@@ -16112,8 +16252,9 @@ PA.views.lesson = (function () {
     var step = 0;
 
     var count = h("span.signs-head__count", { "aria-live": "polite" });
-    var head = h("div.signs-head.wd-head", null, [h("p.signs-head__text", null, act.instruction || "Look and read."), count]);
+    /* consigna, subtítol de la pantalla i comptador en una sola barra (24-11-2026, proposta C) */
     var title = h("h2.wd-title");
+    var head = h("div.signs-head.wd-head", null, [h("p.signs-head__text", null, act.instruction || "Look and read."), title, count]);
     var body = h("div.ls-body", { "aria-live": "polite" });
     var note = h("p.ls-note");
 
@@ -16123,18 +16264,26 @@ PA.views.lesson = (function () {
     backBtn.addEventListener("click", function () { if (step > 0) { step--; render(true); } });
     nextBtn.addEventListener("click", function () { if (step < act.screens.length - 1) { step++; render(true); } });
     doneBtn.addEventListener("click", done);
+    var actions = h("div.guide-actions.wd-actions", null, [backBtn, nextBtn, doneBtn]);
 
     function sentence(text, cls) { return h("p.ls-sentence" + (cls ? "." + cls : ""), null, rich(text)); }
 
-    function clockScreen(sc) {
-      return h("div.ls-row", null, [
-        h("div.ls-clock", null, PA.pixelClock(sc.h, sc.m, { label: "The clock says " + PA.timeWords(sc.h, sc.m) })),
-        h("div.ls-col", null, [
-          sc.question ? sentence(sc.question, "is-q") : null,
-          sentence(sc.text),
-          sc.hint ? h("p.ls-hint", { lang: "ca" }, rich(sc.hint)) : null
-        ])
+    /* Proposta C (24-11-2026): el dibuix a dalt i, a sota, una franja ampla amb les frases
+       i les fletxes ◀ ▶ als costats (render() hi posa els botons Back / Next / Done).
+       Sense caixetes Q/A: la pregunta va en lila clar i la resposta en blanc amb vora. */
+    function cLayout(visual, lines, extraCls) {
+      return h("div.ls-c" + (extraCls || ""), null, [
+        h("div.ls-c__visual", null, visual),
+        h("div.ls-c__strip", null, [h("div.ls-c__nav.is-back"), h("div.ls-c__lines", null, lines), h("div.ls-c__nav.is-next")])
       ]);
+    }
+
+    function clockScreen(sc) {
+      return cLayout(
+        h("div.ls-clock", null, PA.pixelClock(sc.h, sc.m, { label: "The clock says " + PA.timeWords(sc.h, sc.m) })),
+        [sc.question ? sentence(sc.question, "is-q") : null,
+         sentence(sc.text),
+         sc.hint ? h("p.ls-hint", { lang: "ca" }, rich(sc.hint)) : null]);
     }
 
     function exploreScreen(sc) {
@@ -16159,31 +16308,24 @@ PA.views.lesson = (function () {
       oc.addEventListener("click", function () { st.m = 0; paint(); });
       hp.addEventListener("click", function () { st.m = 30; paint(); });
       paint();
-      return h("div.ls-row", null, [
-        h("div.ls-explore", null, [
+      text.className = "ls-c__text";
+      return cLayout(h("div.ls-explore", null, [
           h("div.sk-setclock", null, [minus, clockBox, plus]),
           h("div.wl-chips.sk-chips", { role: "group", "aria-label": "Minutes" }, [oc, hp])
-        ]),
-        text
-      ]);
+        ]), [text], ".ls-c--explore");
     }
 
     function timetableScreen(sc) {
-      return h("div.ls-row" + (sc.split ? ".ls-row--split" : ""), null, [
-        sc.split
-          /* tot el dia: dues meitats (matí i tarda) una al costat de l'altra */
-          ? h("div.px-timetable-pair", null, [
-              PA.timetable(act.timetable.slice(0, 3), { title: "Morning", showWords: !!sc.showWords, size: "big" }),
-              PA.timetable(act.timetable.slice(3), { title: "Afternoon", showWords: !!sc.showWords, size: "big" })])
-          : PA.timetable(sc.timetable || act.timetable, { highlight: sc.highlight, showWords: !!sc.showWords, title: sc.ttTitle,
-              size: (sc.timetable || act.timetable).length <= 3 ? "big" : null }),
-        h("div.ls-col", null, (sc.lines || []).map(function (l, i) {
-          return h("div.aa-line.aa-line--" + (i % 2 === 0 ? "q" : "a"), null, [
-            h("span.aa-line__tag", { "aria-hidden": "true" }, i % 2 === 0 ? "Q" : "A"),
-            h("p.aa-line__text", null, rich(l))
-          ]);
-        }))
-      ]);
+      var rows = sc.timetable || act.timetable;
+      var tiles = !sc.split && rows.length <= 3;   /* horari curt: tres targetes grans una al costat de l'altra */
+      var visual = sc.split
+        /* tot el dia: dues meitats (matí i tarda) una al costat de l'altra */
+        ? h("div.px-timetable-pair", null, [
+            PA.timetable(act.timetable.slice(0, 3), { title: "Morning", showWords: !!sc.showWords, size: "big" }),
+            PA.timetable(act.timetable.slice(3), { title: "Afternoon", showWords: !!sc.showWords, size: "big" })])
+        : PA.timetable(rows, { highlight: sc.highlight, showWords: !!sc.showWords, title: sc.ttTitle, size: tiles ? "big" : null });
+      return cLayout(visual, (sc.lines || []).map(function (l, i) { return sentence(l, i % 2 === 0 ? "is-q" : ""); }),
+        (tiles ? ".ls-c--tiles" : "") + (sc.split ? ".ls-c--split" : ""));
     }
 
     function pairScreen(sc) {
@@ -16209,7 +16351,7 @@ PA.views.lesson = (function () {
     function render(focus) {
       var sc = act.screens[step];
       count.textContent = (step + 1) + "/" + act.screens.length;
-      title.textContent = (step + 1) + " · " + sc.title;
+      title.textContent = sc.title;
       body.textContent = "";
       body.className = "ls-body ls-body--" + sc.type;
       body.appendChild(sc.type === "clock" ? clockScreen(sc) : sc.type === "explore" ? exploreScreen(sc)
@@ -16218,6 +16360,25 @@ PA.views.lesson = (function () {
       note.textContent = "";
       if (sc.note) rich(sc.note).forEach(function (n) { note.appendChild(n); });
       note.hidden = !sc.note;
+      /* proposta C: els botons van als costats de la franja de frases, com a fletxes */
+      var strip = body.querySelector(".ls-c__strip");
+      if (strip) {
+        strip.querySelector(".is-back").appendChild(backBtn);
+        strip.querySelector(".is-next").appendChild(nextBtn);
+        strip.querySelector(".is-next").appendChild(doneBtn);
+        backBtn.textContent = "◀"; nextBtn.textContent = "▶";
+        backBtn.setAttribute("aria-label", "Back"); nextBtn.setAttribute("aria-label", "Next");
+        backBtn.classList.add("ls-arrow"); nextBtn.classList.add("ls-arrow");
+      } else {
+        [backBtn, nextBtn, doneBtn].forEach(function (b) { actions.appendChild(b); });
+        backBtn.textContent = "Back"; nextBtn.textContent = "Next";
+        backBtn.removeAttribute("aria-label"); nextBtn.removeAttribute("aria-label");
+        backBtn.classList.remove("ls-arrow"); nextBtn.classList.remove("ls-arrow");
+      }
+      actions.hidden = !!strip;
+      /* la nota va dins la franja, sota les frases */
+      if (strip) strip.querySelector(".ls-c__lines").appendChild(note);
+      else body.parentNode.insertBefore(note, actions);
       var last = step === act.screens.length - 1;
       backBtn.disabled = step === 0;
       nextBtn.hidden = last; doneBtn.hidden = !last;
@@ -16243,7 +16404,7 @@ PA.views.lesson = (function () {
       }),
       h("main.sections.dither.wl-page.wd-page.ls-page", null, [
         head,
-        h("div.wd-play", null, [title, body, note, h("div.guide-actions.wd-actions", null, [backBtn, nextBtn, doneBtn])])
+        h("div.wd-play", null, [body, note, actions])
       ])
     ]);
     render(false);
