@@ -5400,6 +5400,15 @@ span.letter-slot.is-filled {
 .ls-c--tiles .px-timetable__name { grid-area: name; font-size: clamp(1.3rem, 2.2vw, 1.9rem); }
 .ls-c--tiles .px-clock--sm { grid-area: clock; width: clamp(110px, min(15vw, calc(100vh - var(--inner-hero-h) - 450px)), 200px); }
 .ls-c--tiles .px-timetable__time { grid-area: time; }
+
+/* dues cartes amb les fletxes ◀ ▶ als costats (26-11-2026) */
+.ls-pairrow { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 1.8vw, 24px); position: relative; left: var(--wide-shift); }
+.ls-pairrow > .ls-c__nav { flex: none; }
+.ls-pairrow { margin-top: clamp(4px, 1vh, 10px); }
+.ls-pairrow > .wd-cards:not(.is-contrast) { grid-template-columns: repeat(2, min(var(--card-w), calc((var(--wide-w) - 200px) / 2))); }
+.ls-pairrow > .wd-cards.is-contrast { grid-template-columns: repeat(2, min(500px, calc((var(--wide-w) - 200px) / 2))); }
+/* la nota, el títol i l'escena es centren sobre les cartes desplaçades */
+.wd-play > .ls-note, .wd-play > .wd-note, .view--wd .wd-play > .wd-title, .view--wd .wd-play > .wd-scene, .view--wd .wd-head { position: relative; left: var(--wide-shift); }
 /* ============================================================
    REGLA D'INTERACCIÓ DE PIXEL ACADEMY
    Tots els elements clicables responen igual, cadascun amb el seu color.
@@ -13846,7 +13855,11 @@ PA.views.whatDo = (function () {
     backBtn.addEventListener("click", function () { if (step > 0) { step--; render(true); } });
     nextBtn.addEventListener("click", function () { if (step < act.screens.length - 1) { step++; render(true); } });
     doneBtn.addEventListener("click", done);
-    var actions = h("div.guide-actions.wd-actions", null, [backBtn, nextBtn, doneBtn]);
+    /* fletxes ◀ ▶ als costats de les cartes (26-11-2026, com la proposta C) */
+    backBtn.textContent = "◀"; nextBtn.textContent = "▶";
+    backBtn.setAttribute("aria-label", "Back"); nextBtn.setAttribute("aria-label", "Next");
+    backBtn.classList.add("ls-arrow"); nextBtn.classList.add("ls-arrow");
+    var pairRow = h("div.ls-pairrow", null, [h("div.ls-c__nav.is-back", null, backBtn), cardsBox, h("div.ls-c__nav.is-next", null, [nextBtn, doneBtn])]);
 
     /* frase: They (don't) + verb + complement */
     function sentence(phrase, neg) {
@@ -13931,7 +13944,7 @@ PA.views.whatDo = (function () {
       }),
       h("main.sections.dither.wl-page.wd-page", null, [
         head,
-        h("div.wd-play", null, [title, scene, cardsBox, note, actions])
+        h("div.wd-play", null, [title, scene, pairRow, note])
       ])
     ]);
 
@@ -16328,7 +16341,11 @@ PA.views.lesson = (function () {
         (tiles ? ".ls-c--tiles" : "") + (sc.split ? ".ls-c--split" : ""));
     }
 
+    /* dues cartes amb les fletxes ◀ ▶ als costats (26-11-2026, com la proposta C) */
     function pairScreen(sc) {
+      return h("div.ls-pairrow", null, [h("div.ls-c__nav.is-back"), pairCards(sc), h("div.ls-c__nav.is-next")]);
+    }
+    function pairCards(sc) {
       return h("div.wd-cards", null, sc.cards.map(function (c, i) {
         return h("figure.wd-card" + (c.neg ? ".is-neg" : ".is-pos"), { "data-side": i ? "right" : "left" }, [
           h("div.wd-card__art" + (c.faded ? ".ls-faded" : "") + (c.pizza ? ".ls-pizza" : ""), null, [
@@ -16361,7 +16378,7 @@ PA.views.lesson = (function () {
       if (sc.note) rich(sc.note).forEach(function (n) { note.appendChild(n); });
       note.hidden = !sc.note;
       /* proposta C: els botons van als costats de la franja de frases, com a fletxes */
-      var strip = body.querySelector(".ls-c__strip");
+      var strip = body.querySelector(".ls-c__strip, .ls-pairrow");
       if (strip) {
         strip.querySelector(".is-back").appendChild(backBtn);
         strip.querySelector(".is-next").appendChild(nextBtn);
@@ -16377,7 +16394,7 @@ PA.views.lesson = (function () {
       }
       actions.hidden = !!strip;
       /* la nota va dins la franja, sota les frases */
-      if (strip) strip.querySelector(".ls-c__lines").appendChild(note);
+      if (strip && strip.querySelector(".ls-c__lines")) strip.querySelector(".ls-c__lines").appendChild(note);
       else body.parentNode.insertBefore(note, actions);
       var last = step === act.screens.length - 1;
       backBtn.disabled = step === 0;
