@@ -589,6 +589,12 @@ html.pa-noscroll, html.pa-noscroll body { overflow: hidden; overscroll-behavior:
   text-underline-offset: calc(var(--px) * 1.5);
   text-decoration-color: var(--c);
 }
+
+/* 27-11-2026 (U4): a partir de 700 px totes les unitats van en una sola fila (fins a 6),
+   perquè la portada del curs no faci scroll quan n'hi ha 4 o més */
+@media (min-width: 700px) {
+  .units-grid { grid-template-columns: repeat(var(--n-units, 4), minmax(0, var(--card-max))); }
+}
 /* ============================================================
    Pantalla provisional de la unitat
    ============================================================ */
@@ -1725,6 +1731,13 @@ a.section-card:focus-visible .section-card__name {
   font-weight: 600;
 }
 .activity-sim .stage-dialog__sim { max-width: 460px; }
+
+/* targeta provisional (encara sense activitat): apagada i sense clic */
+.activity-card.is-soon { filter: grayscale(0.55) brightness(0.92); cursor: default; }
+.activity-card__soon {
+  font-size: clamp(0.95rem, 1.6vw, 1.25rem); padding: 2px 10px; color: #fff;
+  background: rgba(10, 15, 77, 0.55); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
 /* ============================================================
    Guia de camp (Zoo Field Guide): graella 3 × 3 d'animals,
    fitxa ampliada, rondes de comprovació i resultat.
@@ -2546,6 +2559,11 @@ a.section-card:focus-visible .section-card__name {
   gap: var(--tile-gap);
 }
 .letter-slot-wrap { display: flex; }
+/* frases amb espais (U4: fly a kite): cada paraula és un grup; entre paraules hi ha un forat
+   i, si no hi cap, la frase passa a la fila següent sencera */
+.letter-word { display: flex; gap: var(--tile-gap); }
+.has-gaps .zoo-sign__slots { flex-wrap: wrap; column-gap: calc(var(--tile) * 0.55); row-gap: var(--tile-gap); max-width: calc(var(--tile) * 13); }
+.has-gaps .letter-bank { flex-wrap: wrap; max-width: calc((var(--tile) + var(--tile-gap)) * 11); margin-inline: auto; row-gap: var(--tile-gap); }
 
 /* ---------- Fitxes de lletres (banc i caselles plenes) ---------- */
 .px-btn.letter-tile,
@@ -3481,6 +3499,11 @@ span.letter-slot.is-filled {
 @media (min-width: 1001px) and (orientation: landscape) {
   .ozoo-groups[style*="--cols: 2"] { width: min(100%, 680px); justify-self: center; }
 }
+
+/* ✓ / ✗ de la web damunt la carta (U4 · Weekend Builder!) */
+.ozoo-pic { position: relative; }
+.sk-mark.ozoo-mark { top: 6px; right: 6px; }
+.sk-mark.ozoo-mark[hidden] { display: none; }
 /* ============================================================
    What are they like? — Grammar 1 (They are / They aren't + adjectiu).
    Targeta amb la il·lustració sencera (transparència original), l'etiqueta
@@ -5211,6 +5234,11 @@ span.letter-slot.is-filled {
 }
 .sk-mark.is-yes { background: #2f9e44; }
 .sk-mark.is-no { background: #e2232c; }
+
+/* ✓ / ✗ damunt la carta dels taulers build / words (U4) */
+.sk-boardpic { position: relative; }
+.sk-mark.sk-boardmark { top: 4px; right: 4px; font-size: clamp(1rem, 1.8vw, 1.4rem); }
+.sk-sprite.is-big { width: clamp(150px, calc(100vh - var(--inner-hero-h) - 330px), 250px); }
 /* ============================================================
    Rellotge pixelat, horari i lliçó de teoria (3r · Unit 2).
    Fa servir les cartes de What do they do? (.wd-*) per a les parelles.
@@ -5409,6 +5437,9 @@ span.letter-slot.is-filled {
 .ls-pairrow > .wd-cards.is-contrast { grid-template-columns: repeat(2, min(500px, calc((var(--wide-w) - 200px) / 2))); }
 /* la nota, el títol i l'escena es centren sobre les cartes desplaçades */
 .wd-play > .ls-note, .wd-play > .wd-note, .view--wd .wd-play > .wd-title, .view--wd .wd-play > .wd-scene, .view--wd .wd-head { position: relative; left: var(--wide-shift); }
+
+/* ✓ / ✗ de la web damunt la carta (U4 · Do you…?) */
+.sk-mark.ls-mark { top: 6px; right: 6px; font-size: clamp(1rem, 1.8vw, 1.5rem); }
 /* ============================================================
    REGLA D'INTERACCIÓ DE PIXEL ACADEMY
    Tots els elements clicables responen igual, cadascun amb el seu color.
@@ -5860,6 +5891,15 @@ PA.courses = [
           { type: "reading",    image: "curs-3/unit-3/reading",    activities: "3r/unit-3/reading" },
           { type: "listening",  image: "curs-3/unit-3/listening",  activities: "3r/unit-3/listening" }
         ]
+      },
+      /* Unit 4 (27-11-2026): parc de Hilltop. Disseny: docs/jocs/unitat-4.md */
+      { id: "unit-4",  label: "Unit 4",  title: "Weekend Fun!",   image: "curs-3/unit-4-weekend-fun",
+        sections: [
+          { type: "vocabulary", image: "curs-3/unit-4/vocabulary", map: "park-vocabulary" },
+          { type: "grammar",    image: "curs-3/unit-4/grammar",    map: "park-grammar" },
+          { type: "reading",    image: "curs-3/unit-4/reading",    activities: "3r/unit-4/reading" },
+          { type: "listening",  image: "curs-3/unit-4/listening",  activities: "3r/unit-4/listening" }
+        ]
       }
     ]
   },
@@ -6025,6 +6065,27 @@ PA.mapScenes = {
       { x: 70, y: 29 }
     ]
   },
+  /* 3r · Unit 4 «Weekend Fun!» (ChatGPT, 27-11-2026): parc de Hilltop. El camí surt de baix a
+     l'esquerra, passa pel skate i el pícnic, l'estany, la pista de bàsquet i el parc infantil, i
+     arriba al quiosc de música de dalt del turó. */
+  park: {
+    name: "Bandstand",
+    alt: "Mapa del parc de Hilltop: un camí de sorra surt de baix a l'esquerra, passa per la pista de skate, el pícnic, l'estany dels ànecs, la pista de bàsquet i el parc infantil, i arriba al quiosc de música de dalt del turó.",
+    background: "assets/img/maps/park", /* + -742.webp / -1484.webp */
+    width: 1484,
+    height: 1060,
+    nodeWidth: 11,
+    goal: { label: "Bandstand", position: { x: 84, y: 9 } },
+    slots: [
+      { x: 5,  y: 86 },
+      { x: 9,  y: 64 },
+      { x: 27, y: 59 },
+      { x: 46, y: 51 },
+      { x: 44, y: 34 },
+      { x: 60, y: 27 },
+      { x: 77, y: 24 }
+    ]
+  },
   zoo: {
     name: "Zoo",
     alt: "Mapa del zoo: un camí de sorra surt del cartell Start, passa pel pont del llac del cocodril i arriba a la porta del zoo.",
@@ -6149,6 +6210,33 @@ PA.maps = {
     ]
   }),
 
+  /* 3r · Unit 4 — Vocabulary i Grammar. Disseny: docs/jocs/unitat-4.md §2 i §3 */
+  "park-vocabulary": PA.mapItinerary("park", {
+    numbered: true,
+    stages: [
+      { id: "stage-1", type: "theory",    label: "Weekend Fun",          activity: "u4-weekend-fun" },
+      { id: "stage-2", type: "game",      label: "Park Snap!",           comingSoon: true },
+      { id: "stage-3", type: "exercise",  label: "Secret Weekend Signs", activity: "u4-weekend-signs" },
+      { id: "stage-4", type: "theory",    label: "I Can Do It!",         activity: "u4-i-can-do-it" },
+      { id: "stage-5", type: "game",      label: "Inside or Outside?",   comingSoon: true },
+      { id: "stage-6", type: "theory",    label: "More Fun",             activity: "u4-more-fun" },
+      { id: "stage-7", type: "challenge", label: "Weekend Builder!",     activity: "u4-weekend-builder", keepUnlocked: true }
+    ]
+  }),
+  "park-grammar": PA.mapItinerary("park", {
+    numbered: true,
+    accent: { color: "#9462DE", bright: "#C29BFF" },
+    stages: [
+      { id: "stage-1", type: "theory",    label: "Do you…?",          activity: "u4-do-you" },
+      { id: "stage-2", type: "exercise",  label: "Yes, I do!",        activity: "u4-yes-i-do" },
+      { id: "stage-3", type: "game",      label: "What do you do?",   activity: "u4-what-do-you-do" },
+      { id: "stage-4", type: "theory",    label: "Can he? Can she?",  activity: "u4-can-he-she" },
+      { id: "stage-5", type: "exercise",  label: "Can or Can't?",     activity: "u4-can-or-cant" },
+      { id: "stage-6", type: "game",      label: "Talent Day",        comingSoon: true },
+      { id: "stage-7", type: "challenge", label: "Grammar Review",    activity: "u4-grammar-review", keepUnlocked: true }
+    ]
+  }),
+
   /* Grammar: What are they like? → Ask and answer → Animal Puzzle → What do they do? → Grammar Review */
   "zoo-grammar": PA.mapItinerary("zoo", {
     accent: { color: "#9462DE", bright: "#C29BFF" },
@@ -6257,6 +6345,20 @@ PA.activitySets = {
     { id: "2", title: "Pizza Radio",       maxStars: 3, activity: "3r-u3-l2" },
     { id: "3", title: "Does She Like It?", maxStars: 3, activity: "3r-u3-l3" },
     { id: "4", title: "Lunch Radio",       maxStars: 3, activity: "3r-u3-l4" }
+  ] },
+  /* 3r · Unit 4: js/data/skills-3r-unit4.js (disseny: docs/jocs/unitat-4.md §4-5, 27-11-2026).
+     comingSoon: targeta visible però encara sense activitat (falten imatges) */
+  "3r/unit-4/reading": { screen: "reading", items: [
+    { id: "1", title: "Emma's Weekend",    maxStars: 3, activity: "3r-u4-r1" },
+    { id: "2", title: "Oscar's Skateboard", maxStars: 3, comingSoon: true },
+    { id: "3", title: "My Weekend Poem",   maxStars: 3, activity: "3r-u4-r3" },
+    { id: "4", title: "Ask for Help!",     maxStars: 3, activity: "3r-u4-r4" }
+  ] },
+  "3r/unit-4/listening": { screen: "listening", items: [
+    { id: "1", title: "Weekend Radio", maxStars: 3, activity: "3r-u4-l1" },
+    { id: "2", title: "Do You?",       maxStars: 3, activity: "3r-u4-l2" },
+    { id: "3", title: "Can She?",      maxStars: 3, activity: "3r-u4-l3" },
+    { id: "4", title: "Park Radio",    maxStars: 3, comingSoon: true }
   ] },
   "3r/unit-1/listening": { screen: "listening", items: [
     { id: "1", title: "Who Am I?",             maxStars: 3, activity: "3r-u1-l1" },
@@ -7189,7 +7291,7 @@ PA.newOpenZooGame = function (game) {
   }
   return shuffle(game.rounds).map(function (r) {
     /* rondes amb grups explícits (Pizza Builder!, U3): { group, tone, answer, options } */
-    if (r.parts) return { id: r.id, image: r.image, groups: r.parts.map(function (p) {
+    if (r.parts) return { id: r.id, image: r.image, mark: r.mark, groups: r.parts.map(function (p) {
       return { name: p.group, tone: p.tone, answer: p.answer, options: shuffle(p.options), given: !!p.given };
     }) };
     var partner = [];
@@ -9159,6 +9261,480 @@ PA.skillActivities = PA.skillActivities || {};
 </script>
   <script>
 /*
+ * PIXEL ACADEMY — DADES de Vocabulary de 3r · Unit 4 (Weekend Fun!)
+ * ------------------------------------------------------------
+ * Guies de camp (Weekend Fun, I Can Do It!, More Fun), rètols secrets amb espais
+ * (fly a kite) i el repte Weekend Builder! (constructor de frases d'Open the Zoo).
+ * Cartes PIXEL de ChatGPT (nens genèrics, 27-11-2026): assets/img/field-guides/weekend/<activitat>-400/800.webp
+ * Les cartes netes amb personatges (emma-fly-a-kite…) són de Grammar (js/data/grammar-unit4.js).
+ * Disseny: docs/jocs/unitat-4.md §2. Negatives abreujades (I don't).
+ */
+window.PA = window.PA || {};
+
+(function () {
+  var W = "assets/img/field-guides/weekend/";
+
+  /* V1 · Weekend Fun — core (1): free time activities */
+  PA.fieldGuides["u4-weekend-fun"] = {
+    title: "Weekend Fun",
+    instruction: "Tap an activity.",
+    folder: W,
+    layout: "wide",
+    itemWord: "Activity",
+    prompt: "Find:",
+    article: false,
+    stars: [{ min: 8, stars: 3 }, { min: 6, stars: 2 }, { min: 4, stars: 1 }],
+    failNote: "Find at least 4 activities to pass this stage.",
+    animals: [
+      { id: "fly-a-kite",          name: "fly a kite",          sentence: "I fly a kite in the park." },
+      { id: "have-a-picnic",       name: "have a picnic",       sentence: "We have a picnic on the grass." },
+      { id: "listen-to-music",     name: "listen to music",     sentence: "I listen to music with my headphones." },
+      { id: "play-computer-games", name: "play computer games", sentence: "I play computer games at home." },
+      { id: "read-comics",         name: "read comics",         sentence: "I read comics on Saturday." },
+      { id: "ride-a-bike",         name: "ride a bike",         sentence: "I ride a bike in the park." },
+      { id: "swap-cards",          name: "swap cards",          sentence: "We swap cards with our friends." },
+      { id: "talk-to-friends",     name: "talk to friends",     sentence: "I talk to friends at the weekend." }
+    ]
+  };
+
+  /* V3 · Secret Weekend Signs — frases amb espais (el motor deixa un forat fix entre paraules) */
+  PA.wordSigns["u4-weekend-signs"] = {
+    title: "Secret Weekend Signs",
+    instruction: "Look and put the letters in order.",
+    guide: "u4-weekend-fun",
+    reveal: 2,
+    plainFeedback: true,
+    stars: [{ min: 8, stars: 3 }, { min: 6, stars: 2 }, { min: 4, stars: 1 }],
+    words: [
+      { id: "fly-a-kite",          word: "fly a kite" },
+      { id: "swap-cards",          word: "swap cards" },
+      { id: "ride-a-bike",         word: "ride a bike" },
+      { id: "read-comics",         word: "read comics" },
+      { id: "have-a-picnic",       word: "have a picnic" },
+      { id: "talk-to-friends",     word: "talk to friends" },
+      { id: "listen-to-music",     word: "listen to music" },
+      { id: "play-computer-games", word: "play computer games" }
+    ]
+  };
+
+  /* V4 · I Can Do It! — core (2): free time activity verbs */
+  PA.fieldGuides["u4-i-can-do-it"] = {
+    title: "I Can Do It!",
+    instruction: "Tap an activity.",
+    folder: W,
+    layout: "wide",
+    itemWord: "Activity",
+    prompt: "Find:",
+    article: false,
+    stars: [{ min: 6, stars: 3 }, { min: 5, stars: 2 }, { min: 3, stars: 1 }],
+    failNote: "Find at least 3 activities to pass this stage.",
+    animals: [
+      { id: "jump-high",       name: "jump high",       sentence: "I can jump high!" },
+      { id: "play-catch",      name: "play catch",      sentence: "We play catch with a ball." },
+      { id: "play-the-drums",  name: "play the drums",  sentence: "I can play the drums. Boom, boom!" },
+      { id: "play-the-guitar", name: "play the guitar", sentence: "She can play the guitar." },
+      { id: "play-the-piano",  name: "play the piano",  sentence: "He can play the piano." },
+      { id: "skateboard",      name: "skateboard",      sentence: "I can skateboard in the park." }
+    ]
+  };
+
+  /* V6 · More Fun — revision & extension */
+  PA.fieldGuides["u4-more-fun"] = {
+    title: "More Fun",
+    instruction: "Tap an activity.",
+    folder: W,
+    layout: "wide",
+    itemWord: "Activity",
+    prompt: "Find:",
+    article: false,
+    stars: [{ min: 6, stars: 3 }, { min: 5, stars: 2 }, { min: 3, stars: 1 }],
+    failNote: "Find at least 3 activities to pass this stage.",
+    animals: [
+      { id: "paint",           name: "paint",           sentence: "I paint a tree and a sun." },
+      { id: "play-basketball", name: "play basketball", sentence: "She can play basketball." },
+      { id: "play-chess",      name: "play chess",      sentence: "We play chess at home." },
+      { id: "play-football",   name: "play football",   sentence: "He plays football in the park." },
+      { id: "play-tennis",     name: "play tennis",     sentence: "I play tennis on Sunday." },
+      { id: "take-photos",     name: "take photos",     sentence: "I take photos with my camera." }
+    ]
+  };
+
+  /* V7 · Weekend Builder! — repte: carta pixel amb ✓ o ✗ (la posa la web) →
+     [I · I don't] → [verb] → [què]. Una sola frase bona per ronda. */
+  var WHO = ["I", "I don't"];
+  function round(id, card, yes, verb, verbs, what, whats) {
+    return { id: id, image: card, mark: yes ? "yes" : "no", parts: [
+      { group: "I / I don't", tone: "who",  answer: yes ? "I" : "I don't", options: WHO },
+      { group: "Verb",        tone: "verb", answer: verb, options: [verb].concat(verbs) },
+      { group: "What",        tone: "food", answer: what, options: [what].concat(whats) }
+    ] };
+  }
+  PA.openZooGames["u4-weekend-builder"] = {
+    title: "Weekend Builder!",
+    instruction: "Look at the ✓ or ✗ and build the sentence.",
+    folder: W,
+    choices: 3,
+    stars: [{ min: 9, stars: 3 }, { min: 6, stars: 2 }, { min: 3, stars: 1 }],
+    pools: {}, confusables: [],
+    rounds: [
+      round("kite-yes",    "fly-a-kite",          true,  "fly",       ["ride", "read"],         "a kite",         ["a bike", "comics"]),
+      round("comics-no",   "read-comics",         false, "read",      ["play", "swap"],         "comics",         ["cards", "a kite"]),
+      round("bike-yes",    "ride-a-bike",         true,  "ride",      ["fly", "have"],          "a bike",         ["a picnic", "music"]),
+      round("games-no",    "play-computer-games", false, "play",      ["listen to", "read"],    "computer games", ["comics", "music"]),
+      round("picnic-yes",  "have-a-picnic",       true,  "have",      ["ride", "swap"],         "a picnic",       ["a bike", "cards"]),
+      round("cards-yes",   "swap-cards",          true,  "swap",      ["read", "fly"],          "cards",          ["comics", "a kite"]),
+      round("music-no",    "listen-to-music",     false, "listen to", ["talk to", "play"],      "music",          ["friends", "a kite"]),
+      round("friends-yes", "talk-to-friends",     true,  "talk to",   ["listen to", "ride"],    "friends",        ["music", "a bike"]),
+      round("kite-no",     "fly-a-kite",          false, "fly",       ["have", "swap"],         "a kite",         ["a picnic", "cards"])
+    ]
+  };
+})();
+
+</script>
+  <script>
+/*
+ * PIXEL ACADEMY — DADES de Grammar de 3r · Unit 4 (Weekend Fun!)
+ * ------------------------------------------------------------
+ * Do you…? Yes, I do. / No, I don't. · What do you do at the weekend? I… (All about speaking)
+ * Can he / she…? Yes, he / she can. / No, he / she can't. (can't = cannot)
+ * Cartes netes de ChatGPT (27-11-2026): assets/img/field-guides/weekend/<personatge>-<activitat>-400/800.webp
+ * Les ✓ / ✗ les posa la web (mark), mai la imatge. Quan la resposta és «No», es fa servir la carta
+ * pixel de l'activitat amb ✗ (com Tick or Cross? de la U2).
+ * Cànon de la unitat:
+ *   James: rides a bike, plays computer games, has a picnic, plays football, can play the drums; can't play the guitar.
+ *   Emma: flies a kite, reads comics, listens to music, can jump high, can play catch; can't play the drums.
+ *   Ruby: can skateboard, can play the guitar and basketball; can't play the piano, can't catch.
+ *   Oscar: can play the piano, can paint, takes photos; can't skateboard, can't jump high.
+ * docs/jocs/unitat-4.md §3
+ */
+window.PA = window.PA || {};
+PA.grammarActivities = PA.grammarActivities || {};
+PA.skillActivities = PA.skillActivities || {};
+
+(function () {
+  var W = "field-guides/weekend/";
+
+  /* ---------- 1 · Do you…? (lliçó) ---------- */
+  PA.grammarActivities["u4-do-you"] = {
+    view: "lesson", title: "Do you…?", instruction: "Look and read.", doneStars: 3,
+    screens: [
+      { type: "pair", title: "Do you…? · Yes, I do.", note: "Preguntes amb you → Do you…? → [Yes, I do.] / {No, I don't.}",
+        cards: [{ image: W + "james-ride-a-bike", mark: "yes", who: "Emma: ", who2: ["James: "], text: "Do you ride a bike at the weekend?|[Yes, I do.]", alt: "James rides a green bike." },
+                { image: W + "read-comics", mark: "no", neg: true, who: "Emma: ", who2: ["James: "], text: "Do you read comics at the weekend?|{No, I don't.}", alt: "A child reads a comic. A red cross: James doesn't." }] },
+      { type: "pair", title: "Do you…? · No, I don't.", note: "{don't} = do not.",
+        cards: [{ image: W + "james-play-computer-games", mark: "yes", who: "Emma: ", who2: ["James: "], text: "Do you play computer games?|[Yes, I do.]", alt: "James plays computer games on a beanbag." },
+                { image: W + "play-tennis", mark: "no", neg: true, who: "Emma: ", who2: ["James: "], text: "Do you play tennis?|{No, I don't.}", alt: "A child plays tennis. A red cross: James doesn't." }] },
+      { type: "pair", title: "Emma",
+        cards: [{ image: W + "emma-fly-a-kite", mark: "yes", who: "James: ", who2: ["Emma: "], text: "Do you fly a kite at the weekend?|[Yes, I do.]", alt: "Emma flies a colourful kite." },
+                { image: W + "play-computer-games", mark: "no", neg: true, who: "James: ", who2: ["Emma: "], text: "Do you play computer games?|{No, I don't.}", alt: "A child plays computer games. A red cross: Emma doesn't." }] },
+      { type: "pair", title: "What do you do at the weekend?", note: "Per explicar-ho: I + activitat → I [play football].",
+        cards: [{ image: W + "james-play-football", who: "Emma: ", who2: ["James: "], text: "What do you do at the weekend?|I [play football].", alt: "James kicks a football." },
+                { image: W + "emma-listen-to-music", who: "James: ", who2: ["Emma: "], text: "What do you do at the weekend?|I [listen to music].", alt: "Emma listens to music with red headphones." }] }
+    ]
+  };
+
+  /* ---------- 2 · Yes, I do! (exercici: mira la ✓ o la ✗) ---------- */
+  function yn(sprite, mark, question) {
+    var yes = mark === "yes";
+    return { sprite: W + sprite, mark: mark, question: question,
+      answer: yes ? "Yes, I do." : "No, I don't.",
+      options: ["Yes, I do.", "No, I don't.", yes ? "Yes, I don't." : "No, I do."] };
+  }
+  PA.skillActivities["u4-yes-i-do"] = {
+    title: "Yes, I do!", kind: "choose",
+    instruction: "Look at the ✓ or ✗. Answer!",
+    stars: [4, 6, 8],   /* de 8 */
+    items: [
+      yn("james-ride-a-bike", "yes", "Do you ride a bike?"),
+      yn("read-comics", "no", "Do you read comics?"),
+      yn("emma-fly-a-kite", "yes", "Do you fly a kite?"),
+      yn("have-a-picnic", "no", "Do you have a picnic?"),
+      yn("james-emma-swap-cards", "yes", "Do you swap cards?"),
+      yn("play-computer-games", "no", "Do you play computer games?"),
+      yn("emma-listen-to-music", "yes", "Do you listen to music?"),
+      yn("ride-a-bike", "no", "Do you ride a bike?")
+    ]
+  };
+
+  /* ---------- 3 · What do you do? (joc: construir i ordenar, All about speaking) ---------- */
+  function cols(w, v, c) {
+    return [{ name: "Who", tone: "who", options: w, answer: w[0] },
+            { name: "Verb", tone: "verb", options: v, answer: v[0] },
+            { name: "What", tone: "more", options: c, answer: c[0] }];
+  }
+  PA.skillActivities["u4-what-do-you-do"] = {
+    title: "What do you do?", kind: "choose",
+    instruction: "Build and order the sentences!",
+    stars: [3, 5, 7],   /* de 8 */
+    items: [
+      { board: "build", max: 1, sprite: W + "james-play-football", question: "James: What do I do at the weekend? Build it!",
+        groups: cols(["I", "He", "You"], ["play", "plays", "don't play"], ["football", "comics", "a kite"]) },
+      { board: "words", max: 1, sprite: W + "james-ride-a-bike", question: "Put the words in order.",
+        lines: [{ who: "Emma", build: "What do you do at the weekend?" }, { who: "James", text: "I ride a bike." }] },
+      { board: "build", max: 1, sprite: W + "emma-read-comics", question: "Emma: What do I do at the weekend? Build it!",
+        groups: cols(["I", "She", "We"], ["read", "reads", "ride"], ["comics", "a bike", "music"]) },
+      { board: "words", max: 1, sprite: W + "emma-fly-a-kite", question: "Put the words in order.",
+        lines: [{ who: "James", build: "Do you fly a kite?" }, { who: "Emma", text: "Yes, I do." }] },
+      { board: "build", max: 1, sprite: W + "play-tennis", mark: "no", question: "James: Look at the ✗. Build it!",
+        groups: cols(["I", "You", "He"], ["don't play", "play", "doesn't play"], ["tennis", "football", "chess"]) },
+      { board: "words", max: 1, sprite: W + "james-play-computer-games", question: "Put the words in order.",
+        lines: [{ who: "Emma", text: "What do you do at the weekend?" }, { who: "James", build: "I play computer games." }] },
+      { board: "build", max: 1, sprite: W + "james-have-a-picnic", question: "James: What do I do at the weekend? Build it!",
+        groups: cols(["I", "They", "She"], ["have", "has", "haven't"], ["a picnic", "a kite", "comics"]) },
+      { board: "words", max: 1, sprite: W + "emma-listen-to-music", question: "Put the words in order.",
+        lines: [{ who: "James", build: "Do you listen to music?" }, { who: "Emma", text: "Yes, I do." }] }
+    ]
+  };
+
+  /* ---------- 4 · Can he? Can she? (lliçó) ---------- */
+  PA.grammarActivities["u4-can-he-she"] = {
+    view: "lesson", title: "Can he? Can she?", instruction: "Look and read.", doneStars: 3,
+    screens: [
+      { type: "pair", title: "Ruby · Can she…?", note: "{can't} = cannot. Can she…? → [Yes, she can.] / {No, she can't.}",
+        cards: [{ image: W + "ruby-skateboard", text: "Can Ruby skateboard?|[Yes, she can.]", alt: "Ruby rides a skateboard." },
+                { image: W + "ruby-cant-play-the-piano", neg: true, text: "Can Ruby play the piano?|{No, she can't.}", alt: "Ruby tries to play the piano. She can't." }] },
+      { type: "pair", title: "Oscar · Can he…?", note: "Amb he: Can he…? → [Yes, he can.] / {No, he can't.}",
+        cards: [{ image: W + "oscar-play-the-piano", text: "Can Oscar play the piano?|[Yes, he can.]", alt: "Oscar plays the piano." },
+                { image: W + "oscar-cant-skateboard", neg: true, text: "Can Oscar skateboard?|{No, he can't.}", alt: "Oscar tries to skateboard. He can't." }] },
+      { type: "pair", title: "Emma",
+        cards: [{ image: W + "emma-jump-high", text: "Can Emma jump high?|[Yes, she can.]", alt: "Emma jumps very high." },
+                { image: W + "emma-cant-play-the-drums", neg: true, text: "Can Emma play the drums?|{No, she can't.}", alt: "Emma tries to play the drums. She can't." }] },
+      { type: "pair", title: "James",
+        cards: [{ image: W + "james-play-the-drums", text: "Can James play the drums?|[Yes, he can.]", alt: "James plays the drums." },
+                { image: W + "james-cant-play-the-guitar", neg: true, text: "Can James play the guitar?|{No, he can't.}", alt: "James holds the guitar upside down. He can't play it." }] },
+      { type: "pair", title: "She can · He can't", note: "Sense pregunta: She [can] play the guitar. · He {can't} jump high.",
+        cards: [{ image: W + "ruby-play-the-guitar", who: "Ruby: ", text: "She [can] play the guitar.", alt: "Ruby plays the guitar." },
+                { image: W + "oscar-cant-jump-high", neg: true, who: "Oscar: ", text: "He {can't} jump high.", alt: "Oscar tries to jump over a bar. He can't." }] }
+    ]
+  };
+
+  /* ---------- 5 · Can or Can't? (exercici) ---------- */
+  function can(sprite, name, act, yes) {
+    var she = name === "Ruby" || name === "Emma";
+    var p = she ? "she" : "he", q = she ? "he" : "she";
+    var ok = yes ? "Yes, " + p + " can." : "No, " + p + " can't.";
+    var other = yes ? "No, " + p + " can't." : "Yes, " + p + " can.";
+    var trap = yes ? "Yes, " + q + " can." : "No, " + q + " can't.";
+    return { sprite: W + sprite, question: "Can " + name + " " + act + "?", answer: ok, options: [ok, other, trap] };
+  }
+  PA.skillActivities["u4-can-or-cant"] = {
+    title: "Can or Can't?", kind: "choose", bigSprite: true,
+    instruction: "Look at the picture. Answer!",
+    stars: [4, 6, 8],   /* de 8 */
+    items: [
+      can("ruby-skateboard", "Ruby", "skateboard", true),
+      can("oscar-cant-skateboard", "Oscar", "skateboard", false),
+      can("emma-cant-play-the-drums", "Emma", "play the drums", false),
+      can("james-play-the-drums", "James", "play the drums", true),
+      can("ruby-cant-play-the-piano", "Ruby", "play the piano", false),
+      can("oscar-play-the-piano", "Oscar", "play the piano", true),
+      can("oscar-cant-jump-high", "Oscar", "jump high", false),
+      can("emma-jump-high", "Emma", "jump high", true)
+    ]
+  };
+
+  /* ---------- 7 · Grammar Review (triar + construir + ordenar) ---------- */
+  PA.skillActivities["u4-grammar-review"] = {
+    title: "Grammar Review", kind: "choose", bigSprite: true,
+    instruction: "Choose, build and order!",
+    stars: [4, 7, 9],   /* de 10 */
+    items: [
+      yn("emma-read-comics", "yes", "Do you read comics?"),
+      can("ruby-cant-catch", "Ruby", "catch the ball", false),
+      { board: "build", max: 1, sprite: W + "ruby-play-basketball", question: "Look at Ruby. Build the sentence.",
+        groups: cols(["She", "He", "I"], ["can", "can't", "cans"], ["play basketball", "play the piano", "skateboard"]) },
+      { board: "words", max: 1, sprite: W + "oscar-cant-skateboard", question: "Put the words in order.",
+        lines: [{ who: "Emma", build: "Can Oscar skateboard?" }, { who: "James", text: "No, he can't." }] },
+      yn("swap-cards", "no", "Do you swap cards?"),
+      { sprite: W + "oscar-paint", question: "Look at Oscar.", answer: "He can paint.", options: ["He can paint.", "He can't paint.", "He cans paint."] },
+      { board: "build", max: 1, sprite: W + "james-cant-play-the-guitar", question: "Look at James. Build the sentence.",
+        groups: cols(["He", "She", "They"], ["can't", "can", "don't"], ["play the guitar", "play the drums", "jump high"]) },
+      { board: "words", max: 1, sprite: W + "emma-play-catch", question: "Put the words in order.",
+        lines: [{ who: "James", build: "Can Emma play catch?" }, { who: "Ruby", text: "Yes, she can." }] },
+      { sprite: W + "oscar-take-photos", question: "What does Oscar do at the weekend?", answer: "He takes photos.", options: ["He takes photos.", "He take photos.", "He plays tennis."] },
+      { board: "words", max: 1, sprite: W + "james-play-football", question: "Put the words in order.",
+        lines: [{ who: "Emma", text: "What do you do at the weekend?" }, { who: "James", build: "I play football in the park." }] }
+    ]
+  };
+})();
+
+</script>
+  <script>
+/*
+ * PIXEL ACADEMY — DADES de Reading i Listening de 3r · Unit 4 (Weekend Fun!)
+ * ------------------------------------------------------------
+ * Muntat amb les cartes que ja tenim (27-11-2026): pixel (vocabulari, nens genèrics) i netes
+ * (James, Emma, Ruby i Oscar). Marca pròpia: res del llibre. Frases curtes, negatives abreujades.
+ * Pendents d'imatges noves (surten «Coming soon»): R2 Oscar's Skateboard (4 vinyetes) i
+ * L4 Park Radio (escena del parc).
+ * Cànon: el mateix que js/data/grammar-unit4.js. docs/jocs/unitat-4.md §4-5
+ */
+window.PA = window.PA || {};
+PA.skillActivities = PA.skillActivities || {};
+
+(function () {
+  var W = "assets/img/field-guides/weekend/";
+  function card(name, label) {
+    var c = { src: W + name + "-800.webp", w: 800, h: 800 };
+    if (label) { c.label = label; c.hideLabel = true; }
+    return c;
+  }
+  function panel(id, name, alt) { return { id: id, src: W + name + "-400.webp", w: 400, h: 400, alt: alt }; }
+
+  /* ---------------- READING ---------------- */
+
+  /* R1 · Emma's Weekend — llegir i dir si és veritat (amb la carta de cada frase) */
+  PA.skillActivities["3r-u4-r1"] = {
+    title: "Emma's Weekend", kind: "truefalse",
+    instruction: "Read. True or false?",
+    textTitle: "My weekend, by Emma",
+    text: ["My name is Emma.", "At the weekend I go to the park on the hill.", "I fly a kite and I listen to music.",
+           "I {don't play} computer games.", "My friend James rides a bike.", "He plays football too.",
+           "Ruby can skateboard. She {can't play} the piano.", "Oscar can play the piano. He {can't skateboard}."],
+    stars: [3, 5, 7],
+    items: [
+      { statement: "Emma flies a kite.",            answer: true,  evidence: 2, picture: card("emma-fly-a-kite") },
+      { statement: "Emma plays computer games.",    answer: false, evidence: 3, picture: card("play-computer-games") },
+      { statement: "James rides a bike.",           answer: true,  evidence: 4, picture: card("james-ride-a-bike") },
+      { statement: "Ruby can play the piano.",      answer: false, evidence: 6, picture: card("ruby-cant-play-the-piano") },
+      { statement: "Emma listens to music.",        answer: true,  evidence: 2, picture: card("emma-listen-to-music") },
+      { statement: "Oscar can skateboard.",         answer: false, evidence: 7, picture: card("oscar-cant-skateboard") },
+      { statement: "James plays football.",         answer: true,  evidence: 5, picture: card("james-play-football") },
+      { statement: "Oscar can play the piano.",     answer: true,  evidence: 7, picture: card("oscar-play-the-piano") }
+    ]
+  };
+
+  /* R2 · Oscar's Skateboard: pendent de les 4 vinyetes (Coming soon a js/data/activities.js) */
+
+  /* R3 · My Weekend Poem — poema propi en 4 estrofes: ordenar les cartes i respondre */
+  PA.skillActivities["3r-u4-r3"] = {
+    title: "My Weekend Poem", kind: "trail",
+    instruction: "Read the poem.",
+    textTitle: "My Weekend Poem",
+    paragraphs: true, readAloud: true,
+    text: [
+      "Saturday morning, sunny and bright: I ride my bike from left to right.",
+      "Saturday lunch on the grass with friends: we have a picnic, the fun never ends!",
+      "Sunday morning, windy and blue: I fly my kite, and you can too!",
+      "Sunday evening, I sit on my bed: I read my comics, then sleepy head!"
+    ],
+    panels: [
+      panel("1", "ride-a-bike", "A child rides a bike."),
+      panel("2", "have-a-picnic", "A child has a picnic on the grass."),
+      panel("3", "fly-a-kite", "A child flies a kite."),
+      panel("4", "read-comics", "A child reads a comic.")
+    ],
+    stars: [3, 5, 7],
+    items: [
+      { board: "order", max: 4, question: "Put the pictures in order." },
+      { question: "When do I ride my bike?", answer: "On Saturday morning.", evidence: 0,
+        options: ["On Saturday morning.", "On Sunday evening.", "On Sunday morning."] },
+      { question: "Where do we have a picnic?", answer: "On the grass.", evidence: 1,
+        options: ["On the grass.", "On my bed.", "On my bike."] },
+      { question: "What is the weather like on Sunday morning?", answer: "Windy.", evidence: 2,
+        options: ["Windy.", "Rainy.", "Snowy."] },
+      { question: "What do I read on Sunday evening?", answer: "Comics.", evidence: 3,
+        options: ["Comics.", "A kite.", "Music."] }
+    ]
+  };
+
+  /* R4 · Ask for Help! — el valor de la unitat (demanar ajuda), amb les cartes de can / can't */
+  PA.skillActivities["3r-u4-r4"] = {
+    title: "Ask for Help!", kind: "truefalse",
+    instruction: "Read. True or false?",
+    textTitle: "Ask for help!",
+    text: ["Oscar has got a new skateboard.", "He {can't skateboard}. He is sad.", "\"Ruby, can you help me, please?\"",
+           "Ruby can skateboard. She helps Oscar.", "Oscar {can't jump high} too.", "Emma can jump high. She helps him.",
+           "Now Oscar is happy!", "Who do you ask for help?"],
+    stars: [3, 5, 6],
+    items: [
+      { statement: "Oscar has got a new skateboard.", answer: true,  evidence: 0, picture: card("oscar-cant-skateboard") },
+      { statement: "Oscar can skateboard.",           answer: false, evidence: 1, picture: card("oscar-cant-skateboard") },
+      { statement: "Ruby can skateboard.",            answer: true,  evidence: 3, picture: card("ruby-skateboard") },
+      { statement: "Oscar can jump high.",            answer: false, evidence: 4, picture: card("oscar-cant-jump-high") },
+      { statement: "Emma helps Oscar.",               answer: true,  evidence: 5, picture: card("emma-jump-high") },
+      { statement: "Oscar is sad at the end.",        answer: false, evidence: 6, picture: card("oscar-take-photos") }
+    ]
+  };
+
+  /* ---------------- LISTENING ---------------- */
+
+  /* L1 · Weekend Radio — escoltar i triar la carta (cartes pixel) */
+  var ACT = {};
+  ["fly-a-kite", "have-a-picnic", "listen-to-music", "play-computer-games", "read-comics", "ride-a-bike",
+   "swap-cards", "talk-to-friends", "jump-high", "play-catch", "play-the-drums", "play-the-guitar",
+   "play-the-piano", "skateboard", "paint", "play-chess", "play-tennis", "take-photos"].forEach(function (n) {
+    ACT[n] = { src: W + n + "-400.webp", w: 400, h: 400, label: n.replace(/-/g, " "), hideLabel: true };
+  });
+  function pk(say, ok, others) { return { say: say, options: [ok].concat(others), answer: ok }; }
+  PA.skillActivities["3r-u4-l1"] = {
+    title: "Weekend Radio", kind: "pick", mode: "listen", shuffleCards: true,
+    instruction: "Listen. What do they do at the weekend?",
+    cards: ACT,
+    stars: [3, 5, 7],
+    items: [
+      pk("On Saturday, I fly a kite in the park.", "fly-a-kite", ["ride-a-bike", "have-a-picnic"]),
+      pk("At the weekend, I swap cards with my friends.", "swap-cards", ["talk-to-friends", "read-comics"]),
+      pk("On Sunday, I listen to music.", "listen-to-music", ["play-the-piano", "talk-to-friends"]),
+      pk("I play computer games at home.", "play-computer-games", ["play-chess", "read-comics"]),
+      pk("I can play the guitar!", "play-the-guitar", ["play-the-drums", "play-the-piano"]),
+      pk("We have a picnic on the grass.", "have-a-picnic", ["play-catch", "fly-a-kite"]),
+      pk("I take photos with my camera.", "take-photos", ["paint", "play-tennis"]),
+      pk("I can skateboard in the park.", "skateboard", ["ride-a-bike", "jump-high"])
+    ]
+  };
+
+  /* L2 · Do You? — escoltar la pregunta, mirar la ✓ o la ✗ i respondre */
+  function dy(name, mark, act) {
+    return { say: "Do you " + act + "?", picture: card(name), mark: mark,
+             answers: ["Yes, I do.", "No, I don't."], answer: mark === "yes" ? "Yes, I do." : "No, I don't." };
+  }
+  PA.skillActivities["3r-u4-l2"] = {
+    title: "Do You?", kind: "yesno",
+    instruction: "Listen. Look at the ✓ or ✗. Answer!",
+    stars: [3, 5, 7],
+    answers: ["Yes, I do.", "No, I don't."],
+    items: [
+      dy("swap-cards", "yes", "swap cards"),
+      dy("read-comics", "no", "read comics"),
+      dy("talk-to-friends", "yes", "talk to friends"),
+      dy("play-computer-games", "no", "play computer games"),
+      dy("have-a-picnic", "yes", "have a picnic"),
+      dy("fly-a-kite", "no", "fly a kite"),
+      dy("ride-a-bike", "yes", "ride a bike"),
+      dy("listen-to-music", "no", "listen to music")
+    ]
+  };
+
+  /* L3 · Can She? — escoltar «Can Oscar play the piano?» i respondre */
+  function cq(name, who, act, yes) {
+    var p = who === "Ruby" || who === "Emma" ? "she" : "he";
+    var a = ["Yes, " + p + " can.", "No, " + p + " can't."];
+    return { say: "Can " + who + " " + act + "?", picture: card(name), answers: a, answer: yes ? a[0] : a[1] };
+  }
+  PA.skillActivities["3r-u4-l3"] = {
+    title: "Can She?", kind: "yesno",
+    instruction: "Listen and look. Answer!",
+    stars: [3, 5, 7],
+    answers: ["Yes, she can.", "No, she can't."],
+    items: [
+      cq("oscar-play-the-piano", "Oscar", "play the piano", true),
+      cq("ruby-cant-catch", "Ruby", "catch the ball", false),
+      cq("james-play-the-drums", "James", "play the drums", true),
+      cq("emma-cant-play-the-drums", "Emma", "play the drums", false),
+      cq("ruby-play-the-guitar", "Ruby", "play the guitar", true),
+      cq("oscar-cant-jump-high", "Oscar", "jump high", false),
+      cq("emma-play-catch", "Emma", "play catch", true),
+      cq("james-cant-play-the-guitar", "James", "play the guitar", false)
+    ]
+  };
+
+  /* L4 · Park Radio: pendent de l'escena del parc (Coming soon a js/data/activities.js) */
+})();
+
+</script>
+  <script>
+/*
  * Petites utilitats compartides: creació d'elements i rutes d'imatges.
  */
 window.PA = window.PA || {};
@@ -9728,7 +10304,7 @@ PA.views.home = (function () {
         "Les unitats de " + course.label + " arribaran aviat."));
       return;
     }
-    var list = h("ul.units-grid", { "aria-label": "Unitats de " + course.name },
+    var list = h("ul.units-grid", { "aria-label": "Unitats de " + course.name, style: { "--n-units": Math.min(units.length, 6) } },
       units.map(function (u, i) { return buildCard(course, u, i); }));
     unitsArea.appendChild(list);
   }
@@ -10638,6 +11214,14 @@ PA.views.activities = (function () {
 
     var cards = st.items.map(function (it, i) {
       var status = it.done ? starsText(it.bestStars, it.maxStars) : "not done yet";
+      /* targeta provisional (U4, 27-11-2026): es veu amb el títol però encara no s'hi entra */
+      if (it.comingSoon) {
+        return h("li.sections-grid__item", { style: { "--n": i } }, h("span.activity-card.is-soon", {
+          "aria-label": it.title + " — coming soon", style: { "--tone": it.color } }, [
+          h("span.activity-card__title", null, it.title),
+          h("span.activity-card__soon", null, "Coming soon")
+        ]));
+      }
       var card = h("a.activity-card", {
         href: PA.router.activityHref(course.id, unit.id, section.id, it.id),
         "aria-label": it.title + " — " + status,
@@ -11472,8 +12056,9 @@ PA.views.wordSigns = (function () {
       var w = game.words[idx];
       round = {
         word: w.word.toUpperCase(),
-        tiles: PA.scrambleWord(w.word),       /* ordre del banc */
-        placed: w.word.split("").map(function () { return null; }), /* id de fitxa per casella */
+        tiles: PA.scrambleWord(w.word.replace(/ /g, "")),       /* ordre del banc (sense espais) */
+        /* id de fitxa per casella; els espais (fly a kite) són forats fixos: "gap" */
+        placed: w.word.split("").map(function (c) { return c === " " ? "gap" : null; }),
         attempts: 0,
         done: null                            /* "solved" | "revealed" */
       };
@@ -11482,7 +12067,9 @@ PA.views.wordSigns = (function () {
       art.alt = "Mystery animal";
       sign.classList.remove("is-solved", "is-revealed", "is-wrong", "is-new");
       void sign.offsetWidth; sign.classList.add("is-new");
-      play.style.setProperty("--n", round.word.length);
+      /* frases amb espais: les paraules poden anar en dues files, i la mida es calcula amb ~11 caselles */
+      play.style.setProperty("--n", Math.min(round.word.length, 11));
+      play.classList.toggle("has-gaps", round.word.indexOf(" ") !== -1);
       feedback.textContent = ""; feedback.className = "signs-feedback";
       showBtn.hidden = true; nextBtn.hidden = true; checkBtn.hidden = false;
       bank.textContent = "";
@@ -11496,6 +12083,7 @@ PA.views.wordSigns = (function () {
 
     function tileById(id) { return round.tiles.find(function (t) { return t.id === id; }); }
     function isPlaced(t) { return round.placed.indexOf(t.id) !== -1; }
+    function letterAt(id) { return id === "gap" ? " " : tileById(id).letter; }
 
     /* fitxa del banc → primera casella buida */
     function place(t, moveFocus) {
@@ -11533,9 +12121,13 @@ PA.views.wordSigns = (function () {
     function render() {
       /* caselles */
       slotsEl.textContent = "";
+      /* cada paraula va dins el seu grup perquè, si cal, la frase es parteixi entre paraules */
+      var group = h("li.letter-word");
+      slotsEl.appendChild(group);
       round.placed.forEach(function (id, i) {
+        if (id === "gap") { group = h("li.letter-word"); slotsEl.appendChild(group); return; }
         var t = id === null ? null : tileById(id);
-        var li = h("li.letter-slot-wrap");
+        var li = h("span.letter-slot-wrap");
         if (t && !round.done) {
           var b = h("button.px-btn.letter-slot.is-filled", { type: "button", "aria-label": "Letter " + t.letter + ", position " + (i + 1) + ". Remove." }, t.letter);
           b.addEventListener("click", function () { unplace(i, true); });
@@ -11544,7 +12136,7 @@ PA.views.wordSigns = (function () {
           li.appendChild(h("span.letter-slot" + (t ? ".is-filled" : ""),
             { "aria-label": t ? t.letter : "Empty, position " + (i + 1) }, t ? t.letter : ""));
         }
-        slotsEl.appendChild(li);
+        group.appendChild(li);
       });
       /* banc: les fitxes col·locades deixen el seu lloc buit */
       round.tiles.forEach(function (t) {
@@ -11559,7 +12151,7 @@ PA.views.wordSigns = (function () {
 
     function check() {
       if (checkBtn.disabled) return;
-      var guess = round.placed.map(function (id) { return tileById(id).letter; }).join("");
+      var guess = round.placed.map(letterAt).join("");
       var w = game.words[idx];
       if (guess === round.word) {
         round.done = "solved";
@@ -11567,7 +12159,7 @@ PA.views.wordSigns = (function () {
         log.push({ id: w.id, word: w.word, status: "solved" });
         sign.classList.add("is-solved");
         art.alt = cap(w.word);
-        feedback.textContent = "Well done! It is a " + w.word + ".";
+        feedback.textContent = game.plainFeedback ? "Well done! " + cap(w.word) + "!" : "Well done! It is a " + w.word + ".";
         feedback.className = "signs-feedback is-ok";
         finishRound();
         save();
@@ -11585,6 +12177,7 @@ PA.views.wordSigns = (function () {
       var w = game.words[idx];
       var free = round.tiles.slice();
       round.placed = round.word.split("").map(function (letter) {
+        if (letter === " ") return "gap";
         var t = free.find(function (x) { return x.letter === letter; });
         free.splice(free.indexOf(t), 1);
         return t.id;
@@ -12437,7 +13030,9 @@ PA.views.openZoo = (function () {
 
     /* ---------- Il·lustració ---------- */
     var pic = h("img.ozoo-pic__img", { alt: "", width: "800", height: "800", decoding: "async" });
-    var picBox = h("figure.ozoo-pic", null, pic);
+    /* ✓ / ✗ damunt la carta (Weekend Builder!, U4): la posa la web, mai la imatge */
+    var picMark = h("span.sk-mark.ozoo-mark", { role: "img", hidden: true });
+    var picBox = h("figure.ozoo-pic", null, [pic, picMark]);
 
     /* ---------- Opcions (columnes) i panell de la frase ---------- */
     var groupsBox = h("div.ozoo-groups");
@@ -12531,6 +13126,9 @@ PA.views.openZoo = (function () {
       count.textContent = "Round " + (idx + 1) + "/" + rounds.length;
       pic.src = PA.openZooImage(game, rd.image, PA.isInline() ? 400 : 800);
       pic.setAttribute("data-image", rd.image);
+      picMark.hidden = !rd.mark;
+      if (rd.mark) { picMark.className = "sk-mark ozoo-mark is-" + rd.mark; picMark.textContent = rd.mark === "yes" ? "✓" : "✗";
+        picMark.setAttribute("aria-label", rd.mark === "yes" ? "Yes" : "No"); }
       groupsBox.style.setProperty("--cols", rd.groups.filter(function (g) { return !g.given; }).length);
       renderSentence();
       renderGroups();
@@ -14865,7 +15463,9 @@ PA.views.sortGame = (function () {
       var sign = h("span.sort-sign" + (game.signImage ? ".sort-sign--board" : ""), { style: Object.assign(pct(bin.sign), { "--bin": bin.color }), "aria-hidden": "true" }, [
         game.signImage ? h("img.sort-sign__board", { src: PA.asset(game.signImage + "-800.webp"), alt: "", draggable: "false" }) : null,
         h("span.sort-sign__text", null, bin.label)]);
-      var basket = game.basket ? h("img.sort-basket", { src: PA.asset(game.basket + "-800.webp"), alt: "", draggable: "false", style: pct(bin.basket) }) : null;
+      /* bin.image (U4): cada parada té la seva imatge (casa / parc) en lloc de la cistella comuna */
+      var bimg = bin.image || game.basket;
+      var basket = bimg ? h("img.sort-basket" + (bin.image ? ".sort-basket--place" : ""), { src: PA.asset(bimg + "-800.webp"), alt: "", draggable: "false", style: pct(bin.basket) }) : null;
       var front = game.basketFront ? h("img.sort-basket.sort-basket--front", { src: PA.asset(game.basketFront + "-800.webp"), alt: "", draggable: "false", style: pct(bin.basket) }) : null;
       return { zone: zone, sign: sign, basket: basket, front: front, placed: [] };
     });
@@ -14904,7 +15504,7 @@ PA.views.sortGame = (function () {
       layer.textContent = ""; bins.forEach(function (b) { b.placed = []; });
       results.hidden = true; play.hidden = false; current.hidden = true;
       overlay.hidden = false; overlayTitle.hidden = true; /* el títol ja surt a la capçalera i xocava amb els rètols (23-11) */
-      overlayText.textContent = "Is it fruit or a vegetable? Tap the right basket (or use ← →).";
+      overlayText.textContent = game.prompt || "Is it fruit or a vegetable? Tap the right basket (or use ← →).";
       say.textContent = ""; hud();
     }
     function hud() {
@@ -14948,8 +15548,15 @@ PA.views.sortGame = (function () {
       var note = game.notes && game.notes[c.word];
       var plural = /s$/.test(c.word);   /* apples, onions… ; melon, lettuce, spinach… */
       var kind = good.id === "fruit" ? "fruit" : (plural ? "vegetables" : "a vegetable");
-      say.textContent = (ok ? "Yes! " : "Oops! ") + cap(c.word) + (plural ? " are " : " is ") + kind + "." + (note ? " " + note : "");
-      speak(note ? cap(c.word) + ". " + note : cap(c.word) + "!");
+      if (good.phrase) {
+        /* U4 (Inside or Outside?): «We play chess inside.» */
+        var line = "We " + c.word.replace(/-/g, " ") + " " + good.phrase + ".";
+        say.textContent = (ok ? "Yes! " : "Oops! ") + line;
+        speak(line);
+      } else {
+        say.textContent = (ok ? "Yes! " : "Oops! ") + cap(c.word) + (plural ? " are " : " is ") + kind + "." + (note ? " " + note : "");
+        speak(note ? cap(c.word) + ". " + note : cap(c.word) + "!");
+      }
       hud();
       timer = setTimeout(next, note ? 3200 : (ok ? 1200 : 2200));
     }
@@ -14961,7 +15568,7 @@ PA.views.sortGame = (function () {
       if (res.reason !== "locked") { PA.progressStore.save(trackId, res.saved); PA.views.map.setPendingResult(trackId, stageId, res); }
       resStars.textContent = "";
       for (var s = 1; s <= 3; s++) resStars.appendChild(h("img.px-star" + (s <= stars ? ".is-earned" : ""), { src: PA.asset(STAR), alt: "", width: "69", height: "67" }));
-      resTitle.textContent = "The stalls are full! You sorted " + S.correct + " of " + total + ".";
+      resTitle.textContent = (game.endText || "The stalls are full!") + " You sorted " + S.correct + " of " + total + ".";
       resList.textContent = "";
       var seen = {};
       S.log.forEach(function (e) {
@@ -14971,7 +15578,7 @@ PA.views.sortGame = (function () {
       Object.keys(seen).forEach(function (w) {
         resList.appendChild(h("li.signs-mini" + (seen[w] ? ".is-solved" : ".is-revealed"), null, [
           h("span.signs-mini__frame", null, h("img.signs-mini__img", { src: PA.asset(game.cardFolder + w + "-400.webp"), alt: "", width: "400", height: "400" })),
-          h("span.signs-mini__name", null, w), h("span.signs-mini__tag", null, seen[w] ? "✓" : "✗")]));
+          h("span.signs-mini__name", null, w.replace(/-/g, " ")), h("span.signs-mini__tag", null, seen[w] ? "✓" : "✗")]));
       });
       var bestStars = res.bestStars != null ? res.bestStars : stars;
       resBest.textContent = "Points: " + S.score + " · Best score: " + bestStars + (bestStars === 1 ? " star" : " stars");
@@ -15496,7 +16103,9 @@ PA.skillBoardPicture = function (it, h) {
   else if (it.clock) art = PA.pixelClock(it.clock[0], it.clock[1], { label: "A clock" });
   else if (it.pizza) art = PA.pizzaArt(it.pizza, { no: it.no, size: 400 });
   else art = h("img", { src: PA.cardSrc(it.sprite, 400), alt: "", width: "400", height: "400", decoding: "async" });
-  return h("figure.sk-boardpic" + (it.clock ? ".sk-boardpic--clock" : ""), null, art);
+  /* it.mark ("yes"/"no"): ✓ / ✗ de la web damunt la carta (U4) */
+  var mk = it.mark ? h("span.sk-mark.sk-boardmark.is-" + it.mark, { role: "img", "aria-label": it.mark === "yes" ? "Yes" : "No" }, it.mark === "yes" ? "✓" : "✗") : null;
+  return h("figure.sk-boardpic" + (it.clock ? ".sk-boardpic--clock" : ""), null, [art, mk]);
 };
 
 /* ---------- build: construir la frase amb columnes (Grammar Review U2, 19-11-2026) ----------
@@ -15964,7 +16573,8 @@ PA.views.skill = (function () {
           { highlight: it.highlight, title: it.ttTitle, size: (it.timetable || act.timetable).length <= 3 ? "big" : null }));
         if (it.picture) task.appendChild(picture(it.picture, it.point));
         /* it.mark ("yes"/"no"): ✓ verda o ✗ vermella damunt la carta (Tick or Cross?, 24-11-2026) */
-        if (it.sprite) task.appendChild(h("div.sk-sprite" + (it.mark ? ".has-mark" : ""), null, [
+        /* act.bigSprite (U4): la carta és la pista principal → mateixa mida que amb ✓ / ✗ */
+        if (it.sprite) task.appendChild(h("div.sk-sprite" + (it.mark ? ".has-mark" : "") + (act.bigSprite ? ".is-big" : ""), null, [
           h("img", { src: PA.cardSrc(it.sprite, 400), alt: "", width: "400", height: "400" }),
           it.mark ? h("span.sk-mark.is-" + it.mark, { role: "img", "aria-label": it.mark === "yes" ? "Yes" : "No" }, it.mark === "yes" ? "✓" : "✗") : null
         ]));
@@ -16016,7 +16626,11 @@ PA.views.skill = (function () {
               h("div.sk-porder__bubble", null, [h("p.sk-porder__q", null, it.say), player])]),
             h("div.sk-pizza.sk-pizza--order" + (it.no ? ".has-no" : ""), null, PA.pizzaArt(it.pizza, { size: 800 }))]));
         } else {
-          task.appendChild(picture(it.picture, it.point));
+          var pp = picture(it.picture, it.point);
+          /* it.mark: ✓ / ✗ de la web damunt la carta (U4 · Do You?) */
+          if (it.mark) (pp.querySelector(".sk-art") || pp).appendChild(h("span.sk-mark.sk-boardmark.is-" + it.mark,
+            { role: "img", "aria-label": it.mark === "yes" ? "Yes" : "No" }, it.mark === "yes" ? "✓" : "✗"));
+          task.appendChild(pp);
           task.appendChild(player);
         }
         task.appendChild(h("div.aa-answers.sk-yesno", { role: "group", "aria-label": "Answer" }, optionButtons(it.answers || act.answers, function (o) {
@@ -16352,7 +16966,9 @@ PA.views.lesson = (function () {
             /* c.pizza: pizza muntada (U3); c.image: carta ("nom" = school/, "carpeta/nom" = assets/img/) */
             c.pizza ? PA.pizzaArt(c.pizza, { no: c.no, label: c.alt })
               : h("img.wd-card__img", { src: PA.cardSrc(c.image, 800), alt: c.alt || "", width: "800", height: "800", decoding: "async" }),
-            c.cross ? h("span.ls-cross", { "aria-hidden": "true" }) : null
+            c.cross ? h("span.ls-cross", { "aria-hidden": "true" }) : null,
+            /* c.mark ("yes"/"no"): ✓ / ✗ de la web damunt la carta (U4) */
+            c.mark ? h("span.sk-mark.ls-mark.is-" + c.mark, { role: "img", "aria-label": c.mark === "yes" ? "Yes" : "No" }, c.mark === "yes" ? "✓" : "✗") : null
           ]),
           /* «|» parteix la frase en línies (pregunta | resposta) */
           h("figcaption.wd-card__text", null, c.text.split("|").reduce(function (out, line, li) {
