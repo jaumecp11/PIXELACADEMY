@@ -16171,7 +16171,8 @@ PA.skillBoards.words = function (act, it, k) {
 
   var rows = it.lines.map(function (l, i) {
     var side = i % 2 ? ".sk-chat__row--right" : "";
-    var who = h("span.sk-chat__who", null, l.who);
+    /* 28-11-2026 (mestre): sense el nom de qui parla; les bombolles a esquerra i dreta ja ho diuen */
+    var who = null;
     if (l.build) return h("div.sk-chat__row.is-build" + side, null, [who, h("div.sk-chat__bubble.sk-chat__bubble--build", null, buildEl)]);
     var bub = h("div.sk-chat__bubble", null, [h("span", null, l.text)]);
     if (k.speak && "speechSynthesis" in window) {
@@ -16971,12 +16972,11 @@ PA.views.lesson = (function () {
             c.mark ? h("span.sk-mark.ls-mark.is-" + c.mark, { role: "img", "aria-label": c.mark === "yes" ? "Yes" : "No" }, c.mark === "yes" ? "✓" : "✗") : null
           ]),
           /* «|» parteix la frase en línies (pregunta | resposta) */
-          /* 28-11-2026 (mestre): a les frases soles (She can't…, He likes…) no es posa el nom del
-             personatge davant; només als diàlegs (pregunta | resposta) es diu qui parla */
-          h("figcaption.wd-card__text", null, c.text.split("|").reduce(function (out, line, li, all) {
+          /* 28-11-2026 (mestre): cap frase porta el nom del personatge davant, ni les soles
+             (She can't…) ni els diàlegs (Do you…? | Yes, I do.). La carta ja ensenya qui és.
+             Les dades conserven who / who2 (no es mostren). */
+          h("figcaption.wd-card__text", null, c.text.split("|").reduce(function (out, line, li) {
             if (li) out.push(h("br"));
-            var who = all.length < 2 ? null : li === 0 ? c.who : (c.who2 && c.who2[li - 1]);
-            if (who) out.push(h("span.ls-who", null, who));
             return out.concat(rich(line));
           }, []))
         ]);
