@@ -9467,19 +9467,19 @@ PA.skillActivities = PA.skillActivities || {};
     instruction: "Build and order the sentences!",
     stars: [3, 5, 7],   /* de 8 */
     items: [
-      { board: "build", max: 1, sprite: W + "james-play-football", question: "James: What do I do at the weekend? Build it!",
+      { board: "build", max: 1, sprite: W + "james-play-football", question: "What does James say? Build his sentence!",
         groups: cols(["I", "He", "You"], ["play", "plays", "don't play"], ["football", "comics", "a kite"]) },
       { board: "words", max: 1, sprite: W + "james-ride-a-bike", question: "Put the words in order.",
         lines: [{ who: "Emma", build: "What do you do at the weekend?" }, { who: "James", text: "I ride a bike." }] },
-      { board: "build", max: 1, sprite: W + "emma-read-comics", question: "Emma: What do I do at the weekend? Build it!",
+      { board: "build", max: 1, sprite: W + "emma-read-comics", question: "What does Emma say? Build her sentence!",
         groups: cols(["I", "She", "We"], ["read", "reads", "ride"], ["comics", "a bike", "music"]) },
       { board: "words", max: 1, sprite: W + "emma-fly-a-kite", question: "Put the words in order.",
         lines: [{ who: "James", build: "Do you fly a kite?" }, { who: "Emma", text: "Yes, I do." }] },
-      { board: "build", max: 1, sprite: W + "play-tennis", mark: "no", question: "James: Look at the ✗. Build it!",
+      { board: "build", max: 1, sprite: W + "play-tennis", mark: "no", question: "Look at the ✗. What does James say? Build it!",
         groups: cols(["I", "You", "He"], ["don't play", "play", "doesn't play"], ["tennis", "football", "chess"]) },
       { board: "words", max: 1, sprite: W + "james-play-computer-games", question: "Put the words in order.",
         lines: [{ who: "Emma", text: "What do you do at the weekend?" }, { who: "James", build: "I play computer games." }] },
-      { board: "build", max: 1, sprite: W + "james-have-a-picnic", question: "James: What do I do at the weekend? Build it!",
+      { board: "build", max: 1, sprite: W + "james-have-a-picnic", question: "What does James say? Build his sentence!",
         groups: cols(["I", "They", "She"], ["have", "has", "haven't"], ["a picnic", "a kite", "comics"]) },
       { board: "words", max: 1, sprite: W + "emma-listen-to-music", question: "Put the words in order.",
         lines: [{ who: "James", build: "Do you listen to music?" }, { who: "Emma", text: "Yes, I do." }] }
@@ -16971,9 +16971,11 @@ PA.views.lesson = (function () {
             c.mark ? h("span.sk-mark.ls-mark.is-" + c.mark, { role: "img", "aria-label": c.mark === "yes" ? "Yes" : "No" }, c.mark === "yes" ? "✓" : "✗") : null
           ]),
           /* «|» parteix la frase en línies (pregunta | resposta) */
-          h("figcaption.wd-card__text", null, c.text.split("|").reduce(function (out, line, li) {
+          /* 28-11-2026 (mestre): a les frases soles (She can't…, He likes…) no es posa el nom del
+             personatge davant; només als diàlegs (pregunta | resposta) es diu qui parla */
+          h("figcaption.wd-card__text", null, c.text.split("|").reduce(function (out, line, li, all) {
             if (li) out.push(h("br"));
-            var who = li === 0 ? c.who : (c.who2 && c.who2[li - 1]);
+            var who = all.length < 2 ? null : li === 0 ? c.who : (c.who2 && c.who2[li - 1]);
             if (who) out.push(h("span.ls-who", null, who));
             return out.concat(rich(line));
           }, []))
