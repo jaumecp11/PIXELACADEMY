@@ -3190,6 +3190,25 @@ span.letter-slot.is-filled {
 .pb-say:empty { display: none; }
 .pb-overlay { z-index: 5; }
 @media (prefers-reduced-motion: reduce) { .pb-item { transition: none; } .pb-item.is-wrong, .pb-bag.is-full { animation: none; } }
+/* PIXEL ACADEMY — Talent Show (3r · Unit 4 · Grammar 6, 28-11-2026): escena de ChatGPT + dos botons de jurat */
+.ts-banner { grid-template-columns: auto 1fr auto; }
+.ts-q { margin: 0; text-align: center; font-weight: 700; color: #0b1460; line-height: 1.1; font-size: clamp(1.3rem, 2.5vw, 2.1rem); }
+.ts-time { width: clamp(70px, 10vw, 130px); height: 14px; background: #e4e7f6; box-shadow: 0 0 0 3px #0b1460; position: relative; }
+.ts-time__bar { position: absolute; inset: 0 auto 0 0; background: #f2b632; transition: width .1s linear; }
+.ts-time.is-low .ts-time__bar { background: #e2564f; }
+.ts-box {
+  position: relative; overflow: clip; user-select: none; container-type: inline-size;
+  width: min(100%, calc((100vh - var(--inner-hero-h) - 190px) * 16 / 9)); aspect-ratio: 1672 / 941;
+  box-shadow: 0 0 0 var(--px) var(--outline), 0 calc(var(--px) * 2.5) 0 0 var(--shadow);
+  background: #f6c3b4;
+}
+.ts-scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.ts-say { top: 3%; bottom: auto; }
+.ts-overlay { z-index: 5; }
+.ts-choices { display: flex; gap: clamp(12px, 2vw, 28px); justify-content: center; margin-top: clamp(8px, 1.4vh, 14px); }
+.ts-choices[hidden] { display: none; }
+.ts-choice { min-width: clamp(160px, 20vw, 260px); font-size: clamp(1.2rem, 2.2vw, 1.8rem); padding: .3em 1em; }
+.view--talent .kc-mini { aspect-ratio: 16 / 9; }
 /* PIXEL ACADEMY — Pizza Maker! (3r · Unit 3 · Vocabulary, repte final) */
 .pm-page { display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 1.6vh, 18px); }
 .pm-play { display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 1.8vh, 20px); width: min(100%, 1180px); }
@@ -6326,7 +6345,7 @@ PA.maps = {
       { id: "stage-3", type: "game",      label: "What do you do?",   activity: "u4-what-do-you-do" },
       { id: "stage-4", type: "theory",    label: "Can he? Can she?",  activity: "u4-can-he-she" },
       { id: "stage-5", type: "exercise",  label: "Can or Can't?",     activity: "u4-can-or-cant" },
-      { id: "stage-6", type: "game",      label: "Talent Show",       comingSoon: true },
+      { id: "stage-6", type: "game",      label: "Talent Show",       activity: "u4-talent-show" },
       { id: "stage-7", type: "challenge", label: "Grammar Review",    activity: "u4-grammar-review", keepUnlocked: true }
     ]
   }),
@@ -9689,6 +9708,26 @@ PA.skillActivities = PA.skillActivities || {};
       can("oscar-play-the-piano", "Oscar", "play the piano", true),
       can("oscar-cant-jump-high", "Oscar", "jump high", false),
       can("emma-jump-high", "Emma", "jump high", true)
+    ]
+  };
+
+  /* ---------- 6 · Talent Show (joc, 28-11-2026): escenes de ChatGPT amb el jurat d'esquena ---------- */
+  var T = "assets/img/skills/curs-3/unit-4/ts-";
+  PA.talentGames = PA.talentGames || {};
+  PA.talentGames["u4-talent-show"] = {
+    title: "Talent Show",
+    prompt: "You are the judge! Watch the stage. Can they do it?",
+    seconds: 9,
+    stars: [{ min: 8, stars: 3 }, { min: 6, stars: 2 }, { min: 4, stars: 1 }],
+    acts: [
+      { who: "Ruby",  she: true,  act: "skateboard",      can: true,  scene: T + "ruby-skate",   alt: "Ruby skateboards across the stage." },
+      { who: "Ruby",  she: true,  act: "play the piano",  can: false, scene: T + "ruby-piano",   alt: "Ruby tries to play the piano, but she can't." },
+      { who: "Oscar", she: false, act: "play the piano",  can: true,  scene: T + "oscar-piano",  alt: "Oscar plays the piano happily." },
+      { who: "Oscar", she: false, act: "skateboard",      can: false, scene: T + "oscar-skate",  alt: "Oscar wobbles on a skateboard. He can't skateboard." },
+      { who: "Emma",  she: true,  act: "jump high",       can: true,  scene: T + "emma-jump",    alt: "Emma jumps very high." },
+      { who: "Emma",  she: true,  act: "play the drums",  can: false, scene: T + "emma-drums",   alt: "Emma tries to play the drums, but she can't." },
+      { who: "James", she: false, act: "play the drums",  can: true,  scene: T + "james-drums",  alt: "James plays the drums brilliantly." },
+      { who: "James", she: false, act: "play the guitar", can: false, scene: T + "james-guitar", alt: "James tries to play the guitar, but he can't." }
     ]
   };
 
@@ -16227,6 +16266,158 @@ PA.views.packBag = (function () {
 </script>
   <script>
 /*
+ * PIXEL ACADEMY — Talent Show (3r · Unit 4 · Grammar 6, mestre 28-11-2026)
+ * ------------------------------------------------------------
+ * Cada ronda és una escena de ChatGPT: en primer pla, d'esquena, els tres jutges (Grandma Pearl,
+ * Pix i Mr Hill) i al fons l'escenari amb un personatge que intenta una activitat. L'alumne és
+ * el jurat: «Can Ruby skateboard?» → «Yes, she can!» / «No, she can't!» abans que s'acabi el temps.
+ * Opcions sense color fins a respondre (BIBLIA). Dades: PA.talentGames (js/data/grammar-unit4.js)
+ */
+window.PA = window.PA || {};
+PA.views = PA.views || {};
+PA.talentGames = PA.talentGames || {};
+PA.getTalentGame = function (id) { return PA.talentGames[id] || null; };
+
+PA.views.talentShow = (function () {
+  var h = PA.h;
+  var STAR = "assets/img/map-nodes/stars/star-gold.png";
+
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function speak(text) { var sk = PA.views.skill; if (sk && sk.speak) sk.speak(text, false, function () {}); }
+
+  function build(course, unit, section, stageId) {
+    var map = PA.getMap(section.map);
+    var trackId = course.id + "/" + unit.id + "/" + section.id;
+    var stageData = map.stages.find(function (s) { return s.id === stageId; });
+    var game = PA.getTalentGame(stageData.activity);
+    var mapHref = PA.router.sectionHref(course.id, unit.id, section.id);
+
+    var countEl = h("span.sort-count");
+    var qEl = h("p.ts-q", { "aria-live": "polite" });
+    var timeEl = h("span.ts-time", { "aria-hidden": "true" }, h("span.ts-time__bar"));
+    var banner = h("div.run-banner.sort-banner.ts-banner", null, [countEl, qEl, timeEl]);
+    var scene = h("img.ts-scene", { alt: "", width: "1672", height: "941", draggable: "false" });
+    var say = h("p.pb-say.ts-say", { "aria-live": "polite" });
+    var overlayText = h("p.run-overlay__text");
+    var overlayBtn = h("button.px-btn.guide-btn.run-overlay__btn", { type: "button" }, "Start");
+    var overlay = h("div.run-overlay.ts-overlay", null, [overlayText, overlayBtn]);
+    var box = h("div.ts-box", null, [scene, say, overlay]);
+    var yesBtn = h("button.px-btn.sk-option.ts-choice", { type: "button" });
+    var noBtn = h("button.px-btn.sk-option.ts-choice", { type: "button" });
+    var choices = h("div.ts-choices", null, [yesBtn, noBtn]);
+
+    var resStars = h("span.guide-results__stars", { "aria-hidden": "true" });
+    var resTitle = h("h2.guide-results__title", { id: "ts-results-title", tabindex: "-1" });
+    var resList = h("ol.signs-results__list.find-results__list", { "aria-label": "Performers" });
+    var resBest = h("p.guide-results__best");
+    var resNote = h("p.guide-results__note");
+    var againBtn = h("button.px-btn.guide-btn", { type: "button" }, "Play again");
+    var results = h("section.guide-results.find-results.run-results", { hidden: true, "aria-labelledby": "ts-results-title" }, [
+      resStars, resTitle, resList, resBest, resNote,
+      h("div.guide-results__actions", null, [againBtn, h("a.px-btn.guide-btn.guide-btn--map", { href: mapHref }, "Tornar al mapa")])
+    ]);
+    var play = h("div.run-play.sort-play.ts-play", null, [banner, box, choices]);
+    var root = h("div.view.view--sections.view--guide.view--sort.view--talent", {
+      style: { "--c": section.color, "--cb": "#C29BFF", "--sc": section.color, "--tone": section.color }
+    }, [
+      PA.views.sections.buildHeader({ backHref: mapHref, backLabel: "Tornar al mapa",
+        context: course.label + " · " + unit.label + " · " + section.name, title: game.title }),
+      h("main.sections.dither.guide-page.sort-page.ts-page", null, [play, results])
+    ]);
+    game.acts.forEach(function (a) { new Image().src = PA.asset(a.scene + "-1672.webp"); });
+
+    var S, timer = 0, tick = 0;
+    function pron(a) { return a.she ? "she" : "he"; }
+    function newGame() {
+      clearTimeout(timer); clearInterval(tick);
+      S = { state: "start", order: shuffle(game.acts), i: -1, correct: 0, log: [] };
+      results.hidden = true; play.hidden = false; overlay.hidden = false;
+      overlayText.textContent = game.prompt || "You are the judge! Watch the stage. Can they do it?";
+      countEl.textContent = ""; qEl.textContent = ""; say.textContent = ""; choices.hidden = true;
+    }
+    function next() {
+      S.i++;
+      if (S.i >= S.order.length) return finish();
+      var a = S.order[S.i], p = pron(a);
+      scene.src = PA.asset(a.scene + "-1672.webp"); scene.alt = a.alt || "";
+      countEl.textContent = (S.i + 1) + "/" + S.order.length;
+      qEl.textContent = "Can " + a.who + " " + a.act + "?";
+      yesBtn.textContent = "Yes, " + p + " can!"; noBtn.textContent = "No, " + p + " can't!";
+      [yesBtn, noBtn].forEach(function (b) { b.disabled = false; b.className = "px-btn sk-option ts-choice"; });
+      choices.hidden = false; say.textContent = "";
+      S.state = "play";
+      speak(qEl.textContent);
+      /* temps del jurat */
+      var t0 = Date.now(), T = (game.seconds || 9) * 1000, bar = timeEl.firstChild;
+      bar.style.width = "100%"; timeEl.classList.remove("is-low");
+      clearInterval(tick);
+      tick = setInterval(function () {
+        if (!root.isConnected) { clearInterval(tick); return; }
+        var left = Math.max(0, 1 - (Date.now() - t0) / T);
+        bar.style.width = (left * 100) + "%";
+        timeEl.classList.toggle("is-low", left < 0.3);
+        if (left <= 0) { clearInterval(tick); answer(null); }
+      }, 100);
+    }
+    function answer(yes) {
+      if (S.state !== "play") return;
+      S.state = "between"; clearInterval(tick);
+      var a = S.order[S.i], p = pron(a);
+      var ok = yes === a.can;
+      if (ok) S.correct++;
+      S.log.push({ a: a, ok: ok });
+      var right = a.can ? yesBtn : noBtn, picked = yes === null ? null : (yes ? yesBtn : noBtn);
+      [yesBtn, noBtn].forEach(function (b) { b.disabled = true; });
+      if (picked) picked.classList.add(ok ? "is-ok" : "is-no");
+      if (!ok) right.classList.add(picked ? "is-answer" : "is-ok");
+      var line = a.who + (a.can ? " can " : " can't ") + a.act + ".";
+      say.textContent = (yes === null ? "Time's up! " : ok ? "Yes! " : "Oops! ") + line;
+      speak(line);
+      timer = setTimeout(next, 2300);
+    }
+    function finish() {
+      S.state = "end"; choices.hidden = true;
+      var n = S.order.length, stars = 0;
+      for (var i = 0; i < game.stars.length; i++) if (S.correct >= game.stars[i].min) { stars = game.stars[i].stars; break; }
+      var res = PA.progression.record(map.stages, PA.progressStore.load(trackId), stageId, stars);
+      if (res.reason !== "locked") { PA.progressStore.save(trackId, res.saved); PA.views.map.setPendingResult(trackId, stageId, res); }
+      resStars.textContent = "";
+      for (var s = 1; s <= 3; s++) resStars.appendChild(h("img.px-star" + (s <= stars ? ".is-earned" : ""), { src: PA.asset(STAR), alt: "", width: "69", height: "67" }));
+      resTitle.textContent = "Great judging! " + S.correct + " of " + n + " right.";
+      resList.textContent = "";
+      S.log.forEach(function (e) {
+        resList.appendChild(h("li.signs-mini" + (e.ok ? ".is-solved" : ".is-revealed"), null, [
+          h("span.signs-mini__frame.kc-mini", null, h("img.signs-mini__img", { src: PA.asset(e.a.scene + "-1672.webp"), alt: "", width: "1672", height: "941" })),
+          h("span.signs-mini__name", null, e.a.who + (e.a.can ? " can " : " can't ") + e.a.act), h("span.signs-mini__tag", null, e.ok ? "✓" : "✗")]));
+      });
+      var bestStars = res.bestStars != null ? res.bestStars : stars;
+      resBest.textContent = "Best score: " + bestStars + (bestStars === 1 ? " star" : " stars");
+      var notes = [];
+      if (res.newlyUnlocked && res.newlyUnlocked.length) {
+        var opened = map.stages.find(function (st) { return st.id === res.newlyUnlocked[0]; });
+        notes.push("Stage " + opened.index + " is now open on the map!");
+      }
+      if (bestStars === 0) notes.push("Get at least " + game.stars[game.stars.length - 1].min + " right to pass this stage.");
+      resNote.textContent = notes.join(" "); resNote.hidden = !notes.length;
+      setTimeout(function () { play.hidden = true; results.hidden = false; resTitle.focus({ preventScroll: true }); }, 300);
+    }
+
+    yesBtn.addEventListener("click", function () { answer(true); });
+    noBtn.addEventListener("click", function () { answer(false); });
+    overlayBtn.addEventListener("click", function () { overlay.hidden = true; next(); });
+    againBtn.addEventListener("click", newGame);
+    function onKey(e) { if (!root.isConnected) { document.removeEventListener("keydown", onKey); clearInterval(tick); clearTimeout(timer); } }
+    document.addEventListener("keydown", onKey);
+    newGame();
+    return root;
+  }
+
+  return { build: build };
+})();
+
+</script>
+  <script>
+/*
  * PIXEL ACADEMY — Pizza Maker! (repte final de Vocabulary, 3r · Unit 3)
  * ------------------------------------------------------------
  * Idea del mestre (22-11-2026): una pizza buida al davant; una comanda diu què ha
@@ -17734,7 +17925,9 @@ PA.views.unit = (function () {
         root = build(course, unit);                                   /* pantalla provisional (sense canvis) */
       } else if (guideStage) {
         /* etapa amb activitat real: guia de camp, Safari Snap!, Secret Zoo Signs, Zoo Express, Find the Action!, Open the Zoo! o les activitats de Grammar */
-        root = PA.getPackGame && PA.getPackGame(guideStage.activity)
+        root = PA.getTalentGame && PA.getTalentGame(guideStage.activity)
+          ? PA.views.talentShow.build(course, unit, section, guideStage.id)      /* Talent Show (U4) */
+          : PA.getPackGame && PA.getPackGame(guideStage.activity)
           ? PA.views.packBag.build(course, unit, section, guideStage.id)         /* Pack the Bag (U4) */
           : PA.getKiteGame && PA.getKiteGame(guideStage.activity)
           ? PA.views.kiteCatcher.build(course, unit, section, guideStage.id)     /* Kite Catcher (U4) */
