@@ -3097,6 +3097,58 @@ span.letter-slot.is-filled {
 .sort-page .run-overlay { justify-content: flex-start; padding-top: 2.5%; padding-bottom: 9%; }
 .sort-page .run-overlay__btn { margin-top: auto; }
 .sort-page .run-overlay__text { max-width: none; white-space: nowrap; padding: 8px 16px; background: rgba(10, 15, 77, .82); box-shadow: 0 0 0 3px #0a0f4d; }
+/* PIXEL ACADEMY — Kite Catcher (3r · Unit 4 · Vocabulary 2, 28-11-2026)
+   Escena sencera de ChatGPT + estels (una sola imatge, recolorida amb hue-rotate) amb la paraula del codi.
+   Reaprofita la barra, la capa i els resultats de School Run i Sort (css/school-run.css, css/sort-game.css). */
+.kc-banner { grid-template-columns: auto 1fr auto; }
+.kc-phrase {
+  margin: 0; text-align: center; font-weight: 700; color: #0b1460; line-height: 1.1;
+  font-size: clamp(1.4rem, 2.8vw, 2.3rem); letter-spacing: .02em;
+}
+.kc-word { display: inline-block; min-width: 2.2em; }
+.kc-word.is-fixed { color: #5a6190; }
+.kc-word.is-got { color: #2f8a3a; animation: kc-pop .35s steps(3, end); }
+.kc-phrase.is-done .kc-word { color: #2f8a3a; }
+@keyframes kc-pop { 50% { scale: 1.25; } }
+
+.kc-box {
+  position: relative; overflow: clip; user-select: none; container-type: inline-size;
+  width: min(100%, calc((100vh - var(--inner-hero-h) - 110px) * 16 / 9)); aspect-ratio: 1672 / 941;
+  box-shadow: 0 0 0 var(--px) var(--outline), 0 calc(var(--px) * 2.5) 0 0 var(--shadow);
+  background: #cfe6ff;
+}
+.kc-scene { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
+.kc-sky { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.kc-sky .kc-kite { pointer-events: auto; }
+.kc-overlay { z-index: 5; }
+
+/* estel: la imatge (vermella) + la paraula al rombe crema del mig */
+.kc-kite {
+  position: absolute; width: 19cqw; aspect-ratio: 400 / 441; translate: -50% 0; font: inherit;
+  border: 0; padding: 0; background: transparent; cursor: pointer;
+  filter: drop-shadow(0 4px 0 rgba(10, 15, 77, .28));
+}
+.kc-kite__img { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated;
+  filter: hue-rotate(var(--hue, 0deg)); pointer-events: none; }
+.kc-kite__word {
+  /* la paraula va en una etiqueta blanca damunt el rombe: es llegeix bé encara que sigui llarga (computer) */
+  position: absolute; left: 50%; top: 35%; translate: -50% -50%; white-space: nowrap; pointer-events: none;
+  font-family: var(--font); font-weight: 700; color: #0b1460; line-height: 1; font-size: 3.3cqw;
+  padding: .12em .35em .18em; background: #fff; box-shadow: 0 0 0 .5cqw #0b1460, 0 .6cqw 0 .5cqw rgba(10, 15, 77, .25);
+}
+.kc-kite:hover .kc-kite__img, .kc-kite:focus-visible .kc-kite__img { filter: hue-rotate(var(--hue, 0deg)) brightness(1.12); }
+.kc-kite:focus-visible { outline: var(--px) dashed #0b1460; outline-offset: 2px; }
+.kc-kite.is-caught { pointer-events: none; animation: kc-caught .45s steps(4, end) forwards; }
+.kc-kite.is-wrong { animation: kc-wrong .4s steps(4, end); }
+.kc-kite.is-wrong .kc-kite__word { color: #d1365e; }
+.kc-kite.is-away { pointer-events: none; transition: opacity .5s ease; opacity: 0; }
+@keyframes kc-caught { 40% { scale: 1.25; } 100% { scale: .2; opacity: 0; } }
+@keyframes kc-wrong { 25% { translate: calc(-50% - 10px) 0; } 75% { translate: calc(-50% + 10px) 0; } }
+@media (prefers-reduced-motion: reduce) { .kc-kite.is-caught, .kc-kite.is-wrong, .kc-word.is-got { animation: none; } }
+
+.kc-overlay .run-overlay__text { max-width: 34ch; }
+.kc-mini { aspect-ratio: 16 / 9; }
+.kc-mini .signs-mini__img { object-fit: cover; width: 100%; height: 100%; }
 /* PIXEL ACADEMY — Pizza Maker! (3r · Unit 3 · Vocabulary, repte final) */
 .pm-page { display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 1.6vh, 18px); }
 .pm-play { display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 1.8vh, 20px); width: min(100%, 1180px); }
@@ -6215,10 +6267,10 @@ PA.maps = {
     numbered: true,
     stages: [
       { id: "stage-1", type: "theory",    label: "Weekend Fun",          activity: "u4-weekend-fun" },
-      { id: "stage-2", type: "game",      label: "Park Snap!",           comingSoon: true },
+      { id: "stage-2", type: "game",      label: "Kite Catcher",         activity: "u4-kite-catcher" },
       { id: "stage-3", type: "exercise",  label: "Secret Weekend Signs", activity: "u4-weekend-signs" },
       { id: "stage-4", type: "theory",    label: "I Can Do It!",         activity: "u4-i-can-do-it" },
-      { id: "stage-5", type: "game",      label: "Inside or Outside?",   comingSoon: true },
+      { id: "stage-5", type: "game",      label: "Pack the Bag",         comingSoon: true },
       { id: "stage-6", type: "theory",    label: "More Fun",             activity: "u4-more-fun" },
       { id: "stage-7", type: "challenge", label: "Weekend Builder!",     activity: "u4-weekend-builder", keepUnlocked: true }
     ]
@@ -6232,7 +6284,7 @@ PA.maps = {
       { id: "stage-3", type: "game",      label: "What do you do?",   activity: "u4-what-do-you-do" },
       { id: "stage-4", type: "theory",    label: "Can he? Can she?",  activity: "u4-can-he-she" },
       { id: "stage-5", type: "exercise",  label: "Can or Can't?",     activity: "u4-can-or-cant" },
-      { id: "stage-6", type: "game",      label: "Talent Day",        comingSoon: true },
+      { id: "stage-6", type: "game",      label: "Talent Show",       comingSoon: true },
       { id: "stage-7", type: "challenge", label: "Grammar Review",    activity: "u4-grammar-review", keepUnlocked: true }
     ]
   }),
@@ -9270,6 +9322,7 @@ PA.skillActivities = PA.skillActivities || {};
  * Disseny: docs/jocs/unitat-4.md §2. Negatives abreujades (I don't).
  */
 window.PA = window.PA || {};
+PA.kiteGames = PA.kiteGames || {};
 
 (function () {
   var W = "assets/img/field-guides/weekend/";
@@ -9294,6 +9347,22 @@ window.PA = window.PA || {};
       { id: "ride-a-bike",         name: "ride a bike",         sentence: "I ride a bike in the park." },
       { id: "swap-cards",          name: "swap cards",          sentence: "We swap cards with our friends." },
       { id: "talk-to-friends",     name: "talk to friends",     sentence: "I talk to friends at the weekend." }
+    ]
+  };
+
+  /* V2 · Kite Catcher (28-11-2026): una escena de ChatGPT per activitat; paraules als estels.
+     De moment 1 ronda (play the piano) per provar la velocitat amb el mestre; les altres escenes, d'una en una. */
+  var K = "assets/img/skills/curs-3/unit-4/";
+  PA.kiteGames["u4-kite-catcher"] = {
+    title: "Kite Catcher",
+    prompt: "Look at the picture. Tap the kites with the words, in order!",
+    kite: K + "kite",
+    firstCross: 11, cross: 9, every: 2.4, maxKites: 4,
+    stars: [{ maxMistakes: 2, stars: 3 }, { maxMistakes: 5, stars: 2 }, { maxMistakes: 99, stars: 1 }],
+    distractors: ["kite", "bike", "comics", "music", "cards", "friends", "games", "picnic", "football", "tennis",
+                  "guitar", "drums", "chess", "photos", "catch", "ride", "fly", "read", "listen", "swap", "talk", "have", "take"],
+    rounds: [
+      { id: "piano", phrase: "play the piano", scene: K + "kc-piano", alt: "A girl plays the piano in a cosy living room." }
     ]
   };
 
@@ -15612,6 +15681,235 @@ PA.views.sortGame = (function () {
 </script>
   <script>
 /*
+ * PIXEL ACADEMY — Kite Catcher (3r · Unit 4 · Vocabulary 2, mestre 28-11-2026)
+ * ------------------------------------------------------------
+ * Cada ronda és una escena sencera de ChatGPT (una habitació o el parc) on algú fa una activitat.
+ * Des de baix pugen estels, cadascun amb UNA paraula (text del codi, mai a la imatge).
+ * L'alumne toca les paraules de l'activitat en ordre: «play the piano» → play → piano
+ * (els articles i preposicions —the, a, to— ja hi són). Altres estels porten paraules del
+ * vocabulari que no toquen (kite, football…). Si l'estel bo s'escapa per dalt, en torna a sortir un.
+ * Velocitat: ~9 s per creuar (més lents a la primera ronda), màxim 4 estels alhora.
+ * Dades: PA.kiteGames (js/data/weekend-unit4.js) · Estils: css/kite-catcher.css
+ */
+window.PA = window.PA || {};
+PA.views = PA.views || {};
+PA.kiteGames = PA.kiteGames || {};
+PA.getKiteGame = function (id) { return PA.kiteGames[id] || null; };
+
+PA.views.kiteCatcher = (function () {
+  var h = PA.h;
+  var STAR = "assets/img/map-nodes/stars/star-gold.png";
+  var FIXED = ["the", "a", "an", "to"];               /* paraules que ja surten escrites */
+  var HUES = [0, 210, 130, 280, 330, 25];              /* colors dels estels (a partir de l'estel vermell) */
+
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function speak(text) { var sk = PA.views.skill; if (sk && sk.speak) sk.speak(text, false, function () {}); }
+  function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
+
+  function build(course, unit, section, stageId) {
+    var map = PA.getMap(section.map);
+    var trackId = course.id + "/" + unit.id + "/" + section.id;
+    var stageData = map.stages.find(function (s) { return s.id === stageId; });
+    var game = PA.getKiteGame(stageData.activity);
+    var mapHref = PA.router.sectionHref(course.id, unit.id, section.id);
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---------- DOM ---------- */
+    var countEl = h("span.sort-count");
+    var phraseEl = h("p.kc-phrase", { "aria-live": "polite" });
+    var scoreEl = h("span.run-score");
+    var banner = h("div.run-banner.sort-banner.kc-banner", null, [countEl, phraseEl, h("div.run-stats", null, [scoreEl])]);
+
+    var scene = h("img.kc-scene", { alt: "", width: "1672", height: "941", draggable: "false" });
+    var sky = h("div.kc-sky");
+    var overlayText = h("p.run-overlay__text");
+    var overlayBtn = h("button.px-btn.guide-btn.run-overlay__btn", { type: "button" }, "Start");
+    var overlay = h("div.run-overlay.kc-overlay", null, [overlayText, overlayBtn]);
+    var box = h("div.kc-box", { "aria-label": game.title + ". Tap the kites with the words of the activity, in order." }, [scene, sky, overlay]);
+
+    var resStars = h("span.guide-results__stars", { "aria-hidden": "true" });
+    var resTitle = h("h2.guide-results__title", { id: "kc-results-title", tabindex: "-1" });
+    var resList = h("ol.signs-results__list.find-results__list", { "aria-label": "Activities" });
+    var resBest = h("p.guide-results__best");
+    var resNote = h("p.guide-results__note");
+    var againBtn = h("button.px-btn.guide-btn", { type: "button" }, "Play again");
+    var results = h("section.guide-results.find-results.run-results", { hidden: true, "aria-labelledby": "kc-results-title" }, [
+      resStars, resTitle, resList, resBest, resNote,
+      h("div.guide-results__actions", null, [againBtn, h("a.px-btn.guide-btn.guide-btn--map", { href: mapHref }, "Tornar al mapa")])
+    ]);
+    var play = h("div.run-play.sort-play.kc-play", null, [banner, box]);
+    var root = h("div.view.view--sections.view--guide.view--sort.view--kites", {
+      style: { "--c": section.color, "--cb": "#7FE3D6", "--sc": section.color, "--tone": section.color }
+    }, [
+      PA.views.sections.buildHeader({ backHref: mapHref, backLabel: "Tornar al mapa",
+        context: course.label + " · " + unit.label + " · " + section.name, title: game.title }),
+      h("main.sections.dither.guide-page.sort-page.kc-page", null, [play, results])
+    ]);
+    game.rounds.forEach(function (r) { new Image().src = PA.asset(r.scene + "-1672.webp"); });
+
+    /* ---------- partida ---------- */
+    var S, raf = 0, kiteN = 0;
+
+    function roundWords(r) { return r.phrase.split(" "); }
+    function needed(r) { return roundWords(r).filter(function (w) { return FIXED.indexOf(w) === -1; }); }
+
+    function newGame() {
+      cancelAnimationFrame(raf);
+      S = { state: "start", order: game.shuffle === false ? game.rounds.slice() : shuffle(game.rounds), ri: -1,
+            mistakes: 0, roundMistakes: 0, log: [], kites: [], last: 0, spawnAt: 0, found: 0 };
+      sky.textContent = ""; results.hidden = true; play.hidden = false; overlay.hidden = false;
+      overlayText.textContent = game.prompt || "Look at the picture. Tap the kites with the words, in order!";
+      countEl.textContent = ""; phraseEl.textContent = ""; scoreEl.textContent = "";
+    }
+
+    function drawPhrase() {
+      var r = S.order[S.ri], need = needed(r), k = 0;
+      phraseEl.textContent = "";
+      roundWords(r).forEach(function (w, i) {
+        if (i) phraseEl.appendChild(document.createTextNode(" "));
+        if (FIXED.indexOf(w) !== -1) { phraseEl.appendChild(h("span.kc-word.is-fixed", null, w)); return; }
+        var got = k < S.found; k++;
+        phraseEl.appendChild(h("span.kc-word" + (got ? ".is-got" : ""), null, got ? w : "____"));
+      });
+      countEl.textContent = (S.ri + 1) + "/" + S.order.length;
+      scoreEl.textContent = need.length - S.found > 0 ? "" : "✓";
+    }
+
+    function startRound() {
+      S.ri++;
+      if (S.ri >= S.order.length) return finish();
+      var r = S.order[S.ri];
+      S.found = 0; S.roundMistakes = 0;
+      scene.src = PA.asset(r.scene + "-1672.webp");
+      scene.alt = r.alt || "";
+      sky.textContent = ""; S.kites = []; S.spawnAt = 0;
+      drawPhrase();
+      S.state = "play"; S.last = performance.now();
+      raf = requestAnimationFrame(tick);
+    }
+
+    /* tria la paraula del proper estel: la que cal ara (sovint), una altra de la frase o una distractora */
+    function pickWord() {
+      var r = S.order[S.ri], need = needed(r), want = need[S.found];
+      var onScreen = S.kites.map(function (k) { return k.word; });
+      var wantVisible = onScreen.indexOf(want) !== -1;
+      if (!wantVisible && Math.random() < 0.55) return want;
+      var pool = game.distractors.filter(function (w) { return need.indexOf(w) === -1 && onScreen.indexOf(w) === -1; });
+      var rest = need.filter(function (w) { return w !== want && onScreen.indexOf(w) === -1; });
+      if (rest.length && Math.random() < 0.3) return rest[Math.floor(Math.random() * rest.length)];
+      return pool.length ? pool[Math.floor(Math.random() * pool.length)] : want;
+    }
+
+    /* carril lliure (x en %) lluny dels estels que encara són a baix */
+    function lane() {
+      var best = 50, bestD = -1;
+      for (var t = 0; t < 12; t++) {
+        var x = 10 + Math.random() * 80;
+        var d = S.kites.filter(function (k) { return k.y > 55; }).reduce(function (m, k) { return Math.min(m, Math.abs(k.x - x)); }, 999);
+        if (d > bestD) { bestD = d; best = x; }
+      }
+      return best;
+    }
+
+    function spawn() {
+      var word = pickWord();
+      var hue = HUES[kiteN++ % HUES.length];
+      var el = h("button.kc-kite", { type: "button", "aria-label": word, style: { "--hue": hue + "deg" } }, [
+        h("img.kc-kite__img", { src: PA.asset(game.kite + "-400.webp"), alt: "", draggable: "false" }),
+        h("span.kc-kite__word", null, word)
+      ]);
+      var k = { el: el, word: word, x: lane(), y: 108, sway: Math.random() * 6.28, done: false };
+      el.addEventListener("click", function () { tapKite(k); });
+      sky.appendChild(el);
+      S.kites.push(k);
+    }
+
+    function tick(now) {
+      if (!root.isConnected) return;
+      if (S.state !== "play") return;
+      var dt = Math.min(0.06, (now - S.last) / 1000); S.last = now;
+      var cross = (S.ri === 0 ? game.firstCross || 11 : game.cross || 9);       /* segons per creuar */
+      var speed = 120 / cross;                                                    /* % de l'alçada per segon */
+      S.spawnAt -= dt;
+      if (S.spawnAt <= 0 && S.kites.filter(function (k) { return !k.done; }).length < (game.maxKites || 4)) {
+        spawn(); S.spawnAt = (game.every || 2.4) + Math.random() * 0.8;
+      }
+      S.kites.forEach(function (k) {
+        if (k.done) return;
+        k.y -= speed * dt; k.sway += dt * 1.6;
+        var x = k.x + (reduced ? 0 : Math.sin(k.sway) * 2.2);
+        k.el.style.left = x + "%"; k.el.style.top = k.y + "%";
+        k.el.style.rotate = (reduced ? 0 : Math.sin(k.sway) * 6) + "deg";
+        if (k.y < -30) { k.done = true; k.el.remove(); }
+      });
+      S.kites = S.kites.filter(function (k) { return !k.done || k.el.isConnected; });
+      raf = requestAnimationFrame(tick);
+    }
+
+    function tapKite(k) {
+      if (S.state !== "play" || k.done) return;
+      var r = S.order[S.ri], need = needed(r), want = need[S.found];
+      if (k.word === want) {
+        k.done = true; k.el.classList.add("is-caught");
+        speak(k.word);
+        setTimeout(function () { k.el.remove(); }, 450);
+        S.found++; drawPhrase();
+        if (S.found >= need.length) roundDone();
+      } else {
+        S.mistakes++; S.roundMistakes++;
+        k.el.classList.remove("is-wrong"); void k.el.offsetWidth; k.el.classList.add("is-wrong");
+      }
+    }
+
+    function roundDone() {
+      var r = S.order[S.ri];
+      S.state = "between"; cancelAnimationFrame(raf);
+      S.log.push({ r: r, ok: S.roundMistakes === 0 });
+      phraseEl.classList.add("is-done");
+      speak(cap(r.phrase) + "!");
+      S.kites.forEach(function (k) { if (!k.done) k.el.classList.add("is-away"); });
+      setTimeout(function () { phraseEl.classList.remove("is-done"); startRound(); }, 1900);
+    }
+
+    function finish() {
+      S.state = "end";
+      var n = S.order.length, perfect = S.log.filter(function (e) { return e.ok; }).length;
+      var stars = 0;
+      for (var i = 0; i < game.stars.length; i++) if (S.mistakes <= game.stars[i].maxMistakes) { stars = game.stars[i].stars; break; }
+      var res = PA.progression.record(map.stages, PA.progressStore.load(trackId), stageId, stars);
+      if (res.reason !== "locked") { PA.progressStore.save(trackId, res.saved); PA.views.map.setPendingResult(trackId, stageId, res); }
+      resStars.textContent = "";
+      for (var s = 1; s <= 3; s++) resStars.appendChild(h("img.px-star" + (s <= stars ? ".is-earned" : ""), { src: PA.asset(STAR), alt: "", width: "69", height: "67" }));
+      resTitle.textContent = "You caught all the kites! " + perfect + " of " + n + " without mistakes.";
+      resList.textContent = "";
+      S.log.forEach(function (e) {
+        resList.appendChild(h("li.signs-mini" + (e.ok ? ".is-solved" : ".is-revealed"), null, [
+          h("span.signs-mini__frame.kc-mini", null, h("img.signs-mini__img", { src: PA.asset(e.r.scene + "-836.webp"), alt: "", width: "836", height: "470" })),
+          h("span.signs-mini__name", null, e.r.phrase), h("span.signs-mini__tag", null, e.ok ? "✓" : "✗")]));
+      });
+      var bestStars = res.bestStars != null ? res.bestStars : stars;
+      resBest.textContent = "Mistakes: " + S.mistakes + " · Best score: " + bestStars + (bestStars === 1 ? " star" : " stars");
+      var notes = [];
+      if (res.newlyUnlocked && res.newlyUnlocked.length) {
+        var opened = map.stages.find(function (st) { return st.id === res.newlyUnlocked[0]; });
+        notes.push("Stage " + opened.index + " is now open on the map!");
+      }
+      resNote.textContent = notes.join(" "); resNote.hidden = !notes.length;
+      setTimeout(function () { play.hidden = true; results.hidden = false; resTitle.focus({ preventScroll: true }); }, 300);
+    }
+
+    overlayBtn.addEventListener("click", function () { overlay.hidden = true; startRound(); });
+    againBtn.addEventListener("click", newGame);
+    newGame();
+    return root;
+  }
+
+  return { build: build };
+})();
+
+</script>
+  <script>
+/*
  * PIXEL ACADEMY — Pizza Maker! (repte final de Vocabulary, 3r · Unit 3)
  * ------------------------------------------------------------
  * Idea del mestre (22-11-2026): una pizza buida al davant; una comanda diu què ha
@@ -17119,7 +17417,9 @@ PA.views.unit = (function () {
         root = build(course, unit);                                   /* pantalla provisional (sense canvis) */
       } else if (guideStage) {
         /* etapa amb activitat real: guia de camp, Safari Snap!, Secret Zoo Signs, Zoo Express, Find the Action!, Open the Zoo! o les activitats de Grammar */
-        root = PA.getRunGame && PA.getRunGame(guideStage.activity)
+        root = PA.getKiteGame && PA.getKiteGame(guideStage.activity)
+          ? PA.views.kiteCatcher.build(course, unit, section, guideStage.id)     /* Kite Catcher (U4) */
+          : PA.getRunGame && PA.getRunGame(guideStage.activity)
           ? PA.views.schoolRun.build(course, unit, section, guideStage.id)      /* School Run (19-11-2026) */
           : PA.getPizzaMaker && PA.getPizzaMaker(guideStage.activity)
           ? PA.views.pizzaMaker.build(course, unit, section, guideStage.id)     /* Pizza Maker! (U3) */
